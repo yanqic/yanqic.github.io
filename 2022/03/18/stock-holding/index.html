@@ -4,11 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="my first blog, BLOG">
-    <meta name="description" content="this is a test pagehello world
-just for seo test 
-
-rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
+    <meta name="keywords" content="stock holding, BLOG">
+    <meta name="description" content="What if the stock rebounds after I buy put?Today, a friend asked me how to deal with the loss of positions. Is there any">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +17,7 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>my first blog | BLOG</title>
+    <title>stock holding | BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -312,12 +309,12 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">my first blog</h1>
+                    <h1 class="description center-align post-title">stock holding</h1>
                 </div>
             </div>
         </div>
@@ -431,9 +428,13 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/stock/">
+                                <span class="chip bg-color">stock</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -445,7 +446,7 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2022-03-09
+                    2022-03-18
                 </div>
                 
 
@@ -469,10 +470,21 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="this-is-a-test-page"><a href="#this-is-a-test-page" class="headerlink" title="this is a test page"></a>this is a test page</h3><h4 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h4><blockquote>
-<p>just for seo test </p>
-</blockquote>
-<pre class="line-numbers language-none"><code class="language-none">rm -rf &#x2F;* &#x2F;&#x2F; 删库跑路吧<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <p>What if the stock rebounds after I buy put?<br>Today, a friend asked me how to deal with the loss of positions. Is there any way to prevent the next possible drop.</p>
+<p>I said yes, at the end of yesterday’s article, very simple operation. After reading it, he pondered for a moment and said something that surprised me: ‘What if the market rebounds after buying PUT?</p>
+<p>There is really no denying that this happens. A bull market is throwing money away by buying put protection. But if the current bear market, as far as the eye can see, rebounds tomorrow, can share prices really go all the way up? Isn’t it more likely to rebound and then fall or sideways?</p>
+<p>Consider strategy this year first to reverse their bullish thinking, overcome greed, correctly weigh the pros and cons.</p>
+<p>Of course, I also understand that a lot of people have lost a lot of shares. Buying a PUT is like buying insurance. It’s an extra cost and you don’t want to lose more.</p>
+<p>So I recommend the Collar Strategy. That is, if you own a stock, you use the proceeds from selling call to cover the cost of buying put.</p>
+<p>For example, holding a losing stock is like a dilapidated house, and real insurance companies are not willing to insure you. But the stock market is very generous, not only smooth insurance, but also “rent” the “dilapidated” house. The premium is offset by rental fees, so the Collar Strategy is more cost-effective than simply buying a PUT, but there are a few details to be paid for.</p>
+<p>Options Trading<br>the Collar Strategy mainly consists of three legs. The first leg is the holding stock, the second leg is the out-of-price put to insure the holding down, and the third leg is the out-of-price call to hedge the holding cost of put.</p>
+<p>Our main objective is to prevent further declines, not to use this method to make money. So put selects the out-of-the-money option where the absolute value of delta is less than 0.2 and the option expires in 60 days. Call selects the same out-of-the-money option with the same delta value, except that the expiration date is two weeks later.</p>
+<p>In order to get a better time value of the call and prevent the stock from being exercised, the call is selected with a closer maturity date than the put. After the call expires, you can choose call to sell again.</p>
+<p>For example, back to last week, March 4, $JD.com(JD)$ fell sharply on Friday, opening 66. At this point, our choice to prevent a big drop is:</p>
+<p>buy $JD 20220520 50.0 PUT$﻿﻿，<br>sell $JD 20220318 70.0 CALL$。<br>Look at the k line below. On March 4th, put premium was 1.8 and Call premium was 2.3. “Rent” perfectly offsets “insurance premium”.</p>
+<p>Since then, JD.com has fallen all the way down to 43 as of today, while put premium has risen to 10.6. In other words, since March 4, our actual loss per 100 shares is (66-43)* 100-1060 &#x3D;1200.</p>
+<p>Without the Collar Strategy protection, we would have lost $1060 more.</p>
+
                 
             </div>
             <hr/>
@@ -498,7 +510,7 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2022/03/09/my-first-blog/">http://example.com/2022/03/09/my-first-blog/</a>
+                    <a href="http://example.com/2022/03/18/stock-holding/">http://example.com/2022/03/18/stock-holding/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -535,7 +547,11 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/stock/">
+                                    <span class="chip bg-color">stock</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -707,9 +723,56 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2022/03/18/stock-holding/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="stock holding">
+                        
+                        <span class="card-title">stock holding</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            yanqic
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/stock/">
+                        <span class="chip bg-color">stock</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2022/03/17/second-blog/">
                     <div class="card-image">
@@ -727,45 +790,8 @@ rm -rf &amp;#x2F;* &amp;#x2F;&amp;#x2F; 删库跑路吧">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-17
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            yanqic
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/03/09/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-17
                             </span>
                         <span class="publish-author">
                             
