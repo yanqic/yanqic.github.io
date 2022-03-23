@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>这是一篇中文文章</title>
+      <link href="/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/"/>
+      <url>/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/</url>
+      
+        <content type="html"><![CDATA[<p>今天我要给大家介绍一下今年做的一个项目：sablejs。项目的部分代码已经上传到了 Github，但 sablejs 1.x 版本的核心代码部分并没有对外公开，具体原因大家可以参考 Github Issues 的 sablejs 2.0 计划。大约明年 2.0 应该会产出稳定版本，到时候会完整放出对应的全部项目代码，但是目前 sablejs 1.x 版本是可用的。</p><p>这是我第二次作为讲师参加 GMTC，之前也是在 GMTC 深圳站有聊一些 WebAssembly 的内容，今天的议题其实和之前的议题是有一些关联性的，算是之前议题的进一步落地和思考。当然内容就和 WebAssembly 的关系不是很大了。在业余时间我有做过一些技术专栏文章的编写，同时也参与一些开源项目，大家如果有兴趣的话可以去看一看，然后帮忙点个 Star。</p><p>今天的分享我会先讲述一下项目的起因，其次是整个项目我们想达到的目标，接着就是我们在 sablejs 里应用的性能优化的思路和方案，这一块我觉得应该是对大家直接收益最高的部分，最后就是简要阐述一下 sablejs 2.0 的后期规划和开源计划。</p><p>为什么要做 sablejs？</p><p>我们先从项目背景说起。sablejs 的产生实际上是因为友验人机识别验证码这个产品，人机识别验证码这个产品大家应该都或多或少有相关的了解，如果我们简单的来理解的话，你完全可以把它理解为滑动验证码。目前非常多公司都有提供类似的产品和服务方案，包括且不限于极验、腾讯的防水墙、阿里人机验证、网易的易盾等。</p><p>在友验人机识别验证码这个产品里有三块核心的功能，分别是虚拟机保护，设备的特征识别以及 AI 的行为判断。对于设备的特征识别和 AI 的行为判断这两个功能而言，开源社区里有非常成熟的解决方案，例如 Tensorflow。因此使用类似的开源方案然后辅以数据，在我们的实践和落地当中是能够获取到比较精准的识别成功率的。</p><p>但对于虚拟机保护而言，特别是针对于 Web 的虚拟机保护，不管是开源还是商用方案都非常的不尽人意。说到这儿可能有人会疑惑，这个产品为什么还需要虚拟机保护这么复杂的东西？让我们看一看产品的执行逻辑，就应该能清晰的知道原因了。</p><p>从上图我们可以看到验证的整个流程包含了：获取初始化参数、收集客户端特征信息、获取验证挑战、提交特征信息及用户答案、后端特征识别和答案比对这五个关键步骤。其中最核心的，同时也是最脆弱的部分就是客户端的特征收集。之所以要收集客户端的特征信息，是因为我们要以此来产出一个唯一的设备指纹来定位到唯一用户，以便帮助我们的模型来确认当前用户是否存在行为的异常，及时对恶意请求进行阻断，减少企业的被攻击风险。</p><p>但我们也知道 Web 自身是非常开放和包容的，有非常多帮助开发者开发调试的工具，比如 Chrome 的开发者工具。但这也带来了许多问题，其中之一就是，不管我们对代码进行多高强度的混淆，借助开发者工具的帮助我们都可以非常容易的对关键代码进行调试。因此如果想隐藏客户端特征信息的收集逻辑，即使进行了非常复杂的源代码混淆，我们仍然可以较为容易的进行逻辑的调试并且复原原有的代码逻辑。大家有兴趣的话可以去百度或 Google 一下现有人机识别相关产品的破解文章，应该可以看到非常非常多关于此类问题的探讨。</p><p>为了解决这个问题，我们就势必需要自行实现虚拟机保护，依靠这种方式大大增加反编译的难度，以此有效达到防恶意调试的目的。</p><p>怎么去实现虚拟机保护？</p><p>对于 Web 端而言的话，要实现虚拟机保护最简单的方案实际上是通过 WebAssembly。由于 WebAssembly 它本身是完全独立于 JavaScript 引擎的，同时 WebAssembly 完全可以编译执行代码为二进制内容，因此在反调试上是有非常大的优势的。当然，考虑到大部分 Web 的同学更熟悉编写 JavaScript，我们便可以将 quickjs 和 WebAssembly 做一个结合，这样就能够得到一个非常完美的虚拟机保护方案了。</p><p>这个其实是我在之前 GMTC 上聊到过的思路，当然这个思路最后催生出了 SecurityWorker 并开源了出来。对于其他厂商而言，比如 Figma，他们也利用了同样的思路并将其用于用户 Web 插件的执行。尽管这两者用途不一样，但殊途同归，彼此的目的都是差不多的。</p><p>互调过程中并不安全</p><p>在整个实现落地的过程中，我们发现实际上 WebAssembly 这套方案也存在着一些问题，最明显的就是 WebAssembly 和 JavaScript 互相调用的安全性问题。究其原因在于 WebAssembly 和 JavaScript 是两套独立的执行环境，因此如果 WebAssembly 涉及到 DOM、BOM 的调用的时候，它务必需要跟 JavaScript 去做一些通信。那 WebAssembly 它是怎么去做通信的呢？答案是 WebAssembly 会直接使用 eval 来执行对应的 JavaScript 代码字符串。</p><p>eval 的使用是存在非常大的安全隐患的，因为我们完全有能力在 WebAssembly 执行前对 eval 进行复写拦截，从而获取到里面执行的 JavaScript 代码字符串。那我们怎么去解决这个问题呢？最简单的思路实际上就是我们让所有的相关执行都在同一个执行上下文环境中，这样就不存在通信的过程，也就不会存在此类的问题了。</p><p>根据这个思路，因为我们是需要访问 DOM、BOM 的 API 的，同时我们还需要限定在一个执行上下文环境中，那么我们可不可以尝试使用 JavaScript 编写一个 JavaScript 的解释器？参考了 Google Recaptcha 的相关文章后，我们认为这种思路是完全行得通的，同时开源社区也给出了非常多类似的实现，包括像 eval5、sval、sandboxjs……当然，他们也存在非常多的问题需要改进。</p><p>性能太差、VM 初始化时间过长</p><p>如果这么做，第一个我们就会面对的问题便是：解释器的性能。由于 JavaScript 自身是非常灵活，即使我们拥有了 V8 这样的底层执行引擎，从直觉上要基于 JavaScript 写出一个性能尚可的 JavaScript 解释器也会是个不小的挑战，这从各类开源实现的 benchmark 分数也可以得知。其次，目前所有能找到的相关开源实现都比较简陋，主要目的是供学习参考，自身并没有对 test262 的单测进行覆盖率的测试，用在实际生产中是存在比较大的风险的。</p><p>与此同时，我们也调研了一些商业公司的相关类似实现，其中包括腾讯以及字节。从调研结果上来看，他们的实现对于这块性能的优化也还是有很长的路需要走。除此之外，其 VM 实现的初始化耗时过长也是在实际生产中比较致命的一点。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>stock holding</title>
+      <link href="/2022/03/18/stock-holding/"/>
+      <url>/2022/03/18/stock-holding/</url>
+      
+        <content type="html"><![CDATA[<p>What if the stock rebounds after I buy put?<br>Today, a friend asked me how to deal with the loss of positions. Is there any way to prevent the next possible drop.</p><p>I said yes, at the end of yesterday’s article, very simple operation. After reading it, he pondered for a moment and said something that surprised me: ‘What if the market rebounds after buying PUT?</p><p>There is really no denying that this happens. A bull market is throwing money away by buying put protection. But if the current bear market, as far as the eye can see, rebounds tomorrow, can share prices really go all the way up? Isn’t it more likely to rebound and then fall or sideways?</p><p>Consider strategy this year first to reverse their bullish thinking, overcome greed, correctly weigh the pros and cons.</p><p>Of course, I also understand that a lot of people have lost a lot of shares. Buying a PUT is like buying insurance. It’s an extra cost and you don’t want to lose more.</p><p>So I recommend the Collar Strategy. That is, if you own a stock, you use the proceeds from selling call to cover the cost of buying put.</p><p>For example, holding a losing stock is like a dilapidated house, and real insurance companies are not willing to insure you. But the stock market is very generous, not only smooth insurance, but also “rent” the “dilapidated” house. The premium is offset by rental fees, so the Collar Strategy is more cost-effective than simply buying a PUT, but there are a few details to be paid for.</p><p>Options Trading<br>the Collar Strategy mainly consists of three legs. The first leg is the holding stock, the second leg is the out-of-price put to insure the holding down, and the third leg is the out-of-price call to hedge the holding cost of put.</p><p>Our main objective is to prevent further declines, not to use this method to make money. So put selects the out-of-the-money option where the absolute value of delta is less than 0.2 and the option expires in 60 days. Call selects the same out-of-the-money option with the same delta value, except that the expiration date is two weeks later.</p><p>In order to get a better time value of the call and prevent the stock from being exercised, the call is selected with a closer maturity date than the put. After the call expires, you can choose call to sell again.</p><p>For example, back to last week, March 4, $JD.com(JD)$ fell sharply on Friday, opening 66. At this point, our choice to prevent a big drop is:</p><p>buy $JD 20220520 50.0 PUT$﻿﻿，<br>sell $JD 20220318 70.0 CALL$。<br>Look at the k line below. On March 4th, put premium was 1.8 and Call premium was 2.3. “Rent” perfectly offsets “insurance premium”.</p><p>Since then, JD.com has fallen all the way down to 43 as of today, while put premium has risen to 10.6. In other words, since March 4, our actual loss per 100 shares is (66-43)* 100-1060 &#x3D;1200.</p><p>Without the Collar Strategy protection, we would have lost $1060 more.</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> stock </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>second blog</title>
+      <link href="/2022/03/17/second-blog/"/>
+      <url>/2022/03/17/second-blog/</url>
+      
+        <content type="html"><![CDATA[<h1 id="this-is-my-second-blog"><a href="#this-is-my-second-blog" class="headerlink" title="this is my second blog"></a>this is my second blog</h1><blockquote><p>hello, I write it jus for seo test.</p></blockquote><p>What if the stock rebounds after I buy put?<br>Today, a friend asked me how to deal with the loss of positions. Is there any way to prevent the next possible drop.</p><p>I said yes, at the end of yesterday’s article, very simple operation. After reading it, he pondered for a moment and said something that surprised me: ‘What if the market rebounds after buying PUT?</p><p>There is really no denying that this happens. A bull market is throwing money away by buying put protection. But if the current bear market, as far as the eye can see, rebounds tomorrow, can share prices really go all the way up? Isn’t it more likely to rebound and then fall or sideways?</p><p>Consider strategy this year first to reverse their bullish thinking, overcome greed, correctly weigh the pros and cons.</p><p>Of course, I also understand that a lot of people have lost a lot of shares. Buying a PUT is like buying insurance. It’s an extra cost and you don’t want to lose more.</p><p>So I recommend the Collar Strategy. That is, if you own a stock, you use the proceeds from selling call to cover the cost of buying put.</p><p>For example, holding a losing stock is like a dilapidated house, and real insurance companies are not willing to insure you. But the stock market is very generous, not only smooth insurance, but also “rent” the “dilapidated” house. The premium is offset by rental fees, so the Collar Strategy is more cost-effective than simply buying a PUT, but there are a few details to be paid for.</p><p>Options Trading<br>the Collar Strategy mainly consists of three legs. The first leg is the holding stock, the second leg is the out-of-price put to insure the holding down, and the third leg is the out-of-price call to hedge the holding cost of put.</p><p>Our main objective is to prevent further declines, not to use this method to make money. So put selects the out-of-the-money option where the absolute value of delta is less than 0.2 and the option expires in 60 days. Call selects the same out-of-the-money option with the same delta value, except that the expiration date is two weeks later.</p><p>In order to get a better time value of the call and prevent the stock from being exercised, the call is selected with a closer maturity date than the put. After the call expires, you can choose call to sell again.</p><p>For example, back to last week, March 4, $JD.com(JD)$ fell sharply on Friday, opening 66. At this point, our choice to prevent a big drop is:</p><p>buy $JD 20220520 50.0 PUT$﻿﻿，<br>sell $JD 20220318 70.0 CALL$。<br>Look at the k line below. On March 4th, put premium was 1.8 and Call premium was 2.3. “Rent” perfectly offsets “insurance premium”.</p><p>Since then, JD.com has fallen all the way down to 43 as of today, while put premium has risen to 10.6. In other words, since March 4, our actual loss per 100 shares is (66-43)* 100-1060 &#x3D;1200.</p><p>Without the Collar Strategy protection, we would have lost $1060 more.</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>my first blog</title>
+      <link href="/2022/03/09/my-first-blog/"/>
+      <url>/2022/03/09/my-first-blog/</url>
+      
+        <content type="html"><![CDATA[<h3 id="this-is-a-test-page"><a href="#this-is-a-test-page" class="headerlink" title="this is a test page"></a>this is a test page</h3><h4 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h4><blockquote><p>just for seo test </p></blockquote><pre class="line-numbers language-none"><code class="language-none">rm -rf &#x2F;* &#x2F;&#x2F; 删库跑路吧<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2022/03/09/hello-world/"/>
+      <url>/2022/03/09/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
