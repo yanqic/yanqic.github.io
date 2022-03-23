@@ -4,8 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="这是一篇中文文章, BLOG">
-    <meta name="description" content="今天我要给大家介绍一下今年做的一个项目：sablejs。项目的部分代码已经上传到了 Github，但 sablejs 1.x 版本的核心代码部分并没有对外公开，具体原因大家可以参考 Github Issues 的 sablejs 2.0 计">
+    <meta name="keywords" content="数据结构入门, BLOG">
+    <meta name="description" content="1.逻辑结构和物理结构1.1逻辑结构：数据对象中数据元素之间的关系
+集合结构：数据元素除了同属于一个集合之外，她们没有任何关系
+
+线性结构：数据元素之间一对一关系
+
+树形结构：数据元素之间存在一对一或一对多的层级关系
+
+图形结构：数据元素是">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +24,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>这是一篇中文文章 | BLOG</title>
+    <title>数据结构入门 | BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -309,12 +316,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">这是一篇中文文章</h1>
+                    <h1 class="description center-align post-title">数据结构入门</h1>
                 </div>
             </div>
         </div>
@@ -428,9 +435,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/date-structure/">
+                                <span class="chip bg-color">date_structure</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -466,26 +477,172 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>今天我要给大家介绍一下今年做的一个项目：sablejs。项目的部分代码已经上传到了 Github，但 sablejs 1.x 版本的核心代码部分并没有对外公开，具体原因大家可以参考 Github Issues 的 sablejs 2.0 计划。大约明年 2.0 应该会产出稳定版本，到时候会完整放出对应的全部项目代码，但是目前 sablejs 1.x 版本是可用的。</p>
-<p>这是我第二次作为讲师参加 GMTC，之前也是在 GMTC 深圳站有聊一些 WebAssembly 的内容，今天的议题其实和之前的议题是有一些关联性的，算是之前议题的进一步落地和思考。当然内容就和 WebAssembly 的关系不是很大了。在业余时间我有做过一些技术专栏文章的编写，同时也参与一些开源项目，大家如果有兴趣的话可以去看一看，然后帮忙点个 Star。</p>
-<p>今天的分享我会先讲述一下项目的起因，其次是整个项目我们想达到的目标，接着就是我们在 sablejs 里应用的性能优化的思路和方案，这一块我觉得应该是对大家直接收益最高的部分，最后就是简要阐述一下 sablejs 2.0 的后期规划和开源计划。</p>
-<p>为什么要做 sablejs？</p>
-<p>我们先从项目背景说起。sablejs 的产生实际上是因为友验人机识别验证码这个产品，人机识别验证码这个产品大家应该都或多或少有相关的了解，如果我们简单的来理解的话，你完全可以把它理解为滑动验证码。目前非常多公司都有提供类似的产品和服务方案，包括且不限于极验、腾讯的防水墙、阿里人机验证、网易的易盾等。</p>
-<p>在友验人机识别验证码这个产品里有三块核心的功能，分别是虚拟机保护，设备的特征识别以及 AI 的行为判断。对于设备的特征识别和 AI 的行为判断这两个功能而言，开源社区里有非常成熟的解决方案，例如 Tensorflow。因此使用类似的开源方案然后辅以数据，在我们的实践和落地当中是能够获取到比较精准的识别成功率的。</p>
-<p>但对于虚拟机保护而言，特别是针对于 Web 的虚拟机保护，不管是开源还是商用方案都非常的不尽人意。说到这儿可能有人会疑惑，这个产品为什么还需要虚拟机保护这么复杂的东西？让我们看一看产品的执行逻辑，就应该能清晰的知道原因了。</p>
-<p>从上图我们可以看到验证的整个流程包含了：获取初始化参数、收集客户端特征信息、获取验证挑战、提交特征信息及用户答案、后端特征识别和答案比对这五个关键步骤。其中最核心的，同时也是最脆弱的部分就是客户端的特征收集。之所以要收集客户端的特征信息，是因为我们要以此来产出一个唯一的设备指纹来定位到唯一用户，以便帮助我们的模型来确认当前用户是否存在行为的异常，及时对恶意请求进行阻断，减少企业的被攻击风险。</p>
-<p>但我们也知道 Web 自身是非常开放和包容的，有非常多帮助开发者开发调试的工具，比如 Chrome 的开发者工具。但这也带来了许多问题，其中之一就是，不管我们对代码进行多高强度的混淆，借助开发者工具的帮助我们都可以非常容易的对关键代码进行调试。因此如果想隐藏客户端特征信息的收集逻辑，即使进行了非常复杂的源代码混淆，我们仍然可以较为容易的进行逻辑的调试并且复原原有的代码逻辑。大家有兴趣的话可以去百度或 Google 一下现有人机识别相关产品的破解文章，应该可以看到非常非常多关于此类问题的探讨。</p>
-<p>为了解决这个问题，我们就势必需要自行实现虚拟机保护，依靠这种方式大大增加反编译的难度，以此有效达到防恶意调试的目的。</p>
-<p>怎么去实现虚拟机保护？</p>
-<p>对于 Web 端而言的话，要实现虚拟机保护最简单的方案实际上是通过 WebAssembly。由于 WebAssembly 它本身是完全独立于 JavaScript 引擎的，同时 WebAssembly 完全可以编译执行代码为二进制内容，因此在反调试上是有非常大的优势的。当然，考虑到大部分 Web 的同学更熟悉编写 JavaScript，我们便可以将 quickjs 和 WebAssembly 做一个结合，这样就能够得到一个非常完美的虚拟机保护方案了。</p>
-<p>这个其实是我在之前 GMTC 上聊到过的思路，当然这个思路最后催生出了 SecurityWorker 并开源了出来。对于其他厂商而言，比如 Figma，他们也利用了同样的思路并将其用于用户 Web 插件的执行。尽管这两者用途不一样，但殊途同归，彼此的目的都是差不多的。</p>
-<p>互调过程中并不安全</p>
-<p>在整个实现落地的过程中，我们发现实际上 WebAssembly 这套方案也存在着一些问题，最明显的就是 WebAssembly 和 JavaScript 互相调用的安全性问题。究其原因在于 WebAssembly 和 JavaScript 是两套独立的执行环境，因此如果 WebAssembly 涉及到 DOM、BOM 的调用的时候，它务必需要跟 JavaScript 去做一些通信。那 WebAssembly 它是怎么去做通信的呢？答案是 WebAssembly 会直接使用 eval 来执行对应的 JavaScript 代码字符串。</p>
-<p>eval 的使用是存在非常大的安全隐患的，因为我们完全有能力在 WebAssembly 执行前对 eval 进行复写拦截，从而获取到里面执行的 JavaScript 代码字符串。那我们怎么去解决这个问题呢？最简单的思路实际上就是我们让所有的相关执行都在同一个执行上下文环境中，这样就不存在通信的过程，也就不会存在此类的问题了。</p>
-<p>根据这个思路，因为我们是需要访问 DOM、BOM 的 API 的，同时我们还需要限定在一个执行上下文环境中，那么我们可不可以尝试使用 JavaScript 编写一个 JavaScript 的解释器？参考了 Google Recaptcha 的相关文章后，我们认为这种思路是完全行得通的，同时开源社区也给出了非常多类似的实现，包括像 eval5、sval、sandboxjs……当然，他们也存在非常多的问题需要改进。</p>
-<p>性能太差、VM 初始化时间过长</p>
-<p>如果这么做，第一个我们就会面对的问题便是：解释器的性能。由于 JavaScript 自身是非常灵活，即使我们拥有了 V8 这样的底层执行引擎，从直觉上要基于 JavaScript 写出一个性能尚可的 JavaScript 解释器也会是个不小的挑战，这从各类开源实现的 benchmark 分数也可以得知。其次，目前所有能找到的相关开源实现都比较简陋，主要目的是供学习参考，自身并没有对 test262 的单测进行覆盖率的测试，用在实际生产中是存在比较大的风险的。</p>
-<p>与此同时，我们也调研了一些商业公司的相关类似实现，其中包括腾讯以及字节。从调研结果上来看，他们的实现对于这块性能的优化也还是有很长的路需要走。除此之外，其 VM 实现的初始化耗时过长也是在实际生产中比较致命的一点。</p>
+                <h2 id="1-逻辑结构和物理结构"><a href="#1-逻辑结构和物理结构" class="headerlink" title="1.逻辑结构和物理结构"></a>1.逻辑结构和物理结构</h2><h3 id="1-1逻辑结构：数据对象中数据元素之间的关系"><a href="#1-1逻辑结构：数据对象中数据元素之间的关系" class="headerlink" title="1.1逻辑结构：数据对象中数据元素之间的关系"></a>1.1逻辑结构：数据对象中数据元素之间的关系</h3><ul>
+<li><p>集合结构：数据元素除了同属于一个集合之外，她们没有任何关系</p>
+</li>
+<li><p>线性结构：数据元素之间一对一关系</p>
+</li>
+<li><p>树形结构：数据元素之间存在一对一或一对多的层级关系</p>
+</li>
+<li><p>图形结构：数据元素是多对多的关系</p>
+<h3 id="1-2物理结构-存储结构-：数据的逻辑结构在计算机中的存储形式"><a href="#1-2物理结构-存储结构-：数据的逻辑结构在计算机中的存储形式" class="headerlink" title="1.2物理结构(存储结构)：数据的逻辑结构在计算机中的存储形式"></a>1.2物理结构(存储结构)：数据的逻辑结构在计算机中的存储形式</h3><p>存储结构分四类：顺序存储、链接存储、索引存储 和 散列存储。<br>顺序结构和链接结构适用在内存结构中。<br>索引结构和散列结构适用在外存与内存交互结构。</p>
+</li>
+<li><p>顺序结构：在计算机中用一组地址连续的存储单元依次存储线性表的各个数据元素,称作线性表的顺序存储结构。</p>
+</li>
+<li><p>链式结构：把数据元素存放在任意的存储单元里，这组存储单元可以是连续的，也可以是不连续的</p>
+</li>
+<li><p><strong>索引存储</strong>：除建立存储结点信息外，还建立附加的<strong>索引表</strong>来标识结点的地址。索引表由若干索引项组成。</p>
+</li>
+<li><p><strong>散列存储</strong>：散列存储，又称hash存储，是一种力图将数据元素的存储位置与关键码之间建立确定对应关系的查找技术。（本质: 一个数组和多个单链表的组合而成的复合数据结构）</p>
+</li>
+</ul>
+<p><strong>哈希表(散列存储)<strong>：用散列法存储的线性表被称为哈希表，使用的函数被称为散列函数或者哈希函数，f(k)被称为散列地址或者哈希地址。通常情况下，散列表的存储空间是一个</strong>一维数组</strong>，而其哈希地址为数组的下标</p>
+<h2 id="2-知识补充"><a href="#2-知识补充" class="headerlink" title="2. 知识补充"></a>2. 知识补充</h2><h4 id="2-1指针，地址，指针变量"><a href="#2-1指针，地址，指针变量" class="headerlink" title="2.1指针，地址，指针变量"></a>2.1指针，地址，指针变量</h4><p>指针： 指针就是内存地址，是变量的地址 (*p)<br>地址：地址也作为一种值，能被存储、比较、赋值，并称地址数据为指针类型 (&amp;a)<br>指针变量：指针变量是存放地址的变量 a；</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> a<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token operator">*</span>p<span class="token punctuation">;</span>
+p<span class="token operator">=</span><span class="token operator">&amp;</span>a<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-2结构体"><a href="#2-2结构体" class="headerlink" title="2.2结构体"></a>2.2结构体</h4><p>结构体类型：包含不同类型的成员；<br>结构体指针，就是指向结构体变量的指针</p>
+<h4 id="2-3链表"><a href="#2-3链表" class="headerlink" title="2.3链表"></a>2.3链表</h4><p>链表是一种数据结构，必须利用指针变量来实现；数据结构包括（number结构类型，Object类型，Array类型等等）；链表是根据需要开辟内存单元，链表有一个头指针，存放一个地址，该地址指向一个元素（每个链表都有一个头指针，必不可少）；链表中的每一个元素称为节点；节点包含两个部分，用户需要的实际数据，下一个节点的地址(next);链表中的地址是不连续的；要找某一元素，必须先找到上一个元素，根据他提供的下一个元素地址才能找到下一个元素<br>备注： 形参不占内存中的存储单元；如果函数不需要返回值则不需要return语句</p>
+<h3 id="2-4-内存中的-堆与栈"><a href="#2-4-内存中的-堆与栈" class="headerlink" title="2.4 内存中的 堆与栈"></a>2.4 内存中的 堆与栈</h3><h4 id="2-4-1用户空间程序三个阶段"><a href="#2-4-1用户空间程序三个阶段" class="headerlink" title="2.4.1用户空间程序三个阶段"></a>2.4.1用户空间程序三个阶段</h4><ul>
+<li><strong>.data</strong>段：包含了已经初始化了的数据项，这些数据在程序开始运行前就拥有自己的值，这些值是可执行文件的一部分，当可执行文件被加载到内存中用于执行时，这些数据也被加载到内存中。</li>
+<li>.<strong>bss</strong>段：并不是所有数据项在程序开始之前都拥有值，例如你可以定义一个缓冲区来存在某些数据，这个缓冲区是.bss段中定义的。</li>
+<li><strong>.text</strong>段：以上两个段都是源程序所需要的数据，而真正组成程序的机器指令则存放在.text段中。一般情况下，在.text段中不进行数据项的定义。.text段包含名为标号(label)的符号，这些符号用于标识跳转和调用程序代码位置。</li>
+</ul>
+<p>汇编中常说的<strong>堆栈</strong>，其实是栈，并不包含堆。</p>
+<ul>
+<li><strong>栈（操作系统）</strong>：由编译器自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈，栈使用的是一级缓存， 他们通常都是被调用时处于存储空间中，调用完毕立即释放</li>
+<li><strong>堆（操作系统）</strong>： 一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收，分配方式倒是类似于链表。堆则是存放在二级缓存中，生命周期由虚拟机的垃圾回收算法来决定（并不是一旦成为孤儿对象就能被回收）。所以调用这些对象的速度要相对来得低一些</li>
+<li><strong>堆（数据结构）</strong>：堆可以被看成是一棵树，如：堆排序</li>
+<li><strong>栈（数据结构）</strong>：一种后进先出的数据结构</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/299905/1554040251860-cf6615e9-9b4a-4110-b3c0-7693e0a60882.png#align=left&display=inline&height=723&margin=%5Bobject%20Object%5D&name=image.png&originHeight=740&originWidth=492&size=54020&status=done&style=none&width=481" alt="image.png"></p>
+<h2 id="3-线性表"><a href="#3-线性表" class="headerlink" title="3.线性表"></a>3.线性表</h2><p>线性表是零个或多个具有相同特性的<strong>数据元素</strong>组成的有限序列(特点：有序，有限，没有前驱元素只有后继元素),每个元素为<strong>单元素</strong><br>3.1 存储结构</p>
+<ul>
+<li>顺序存储： 优点：不需要额外引用地址空间 缺点：增删移动大量元素</li>
+<li>链式存储： 节点包含数据域、指针域， 优缺点相反</li>
+</ul>
+<p>3.2  单链表<br>一个节点只包含数据域和<strong>一个</strong>指针域<br>3.3 静态链表<br>有人想出了用数组来代替指针，来描述单链表，让每个数组的元素都由两个数据域组成，数组的每个下标都对应两个数据域，一个用来存放数据元素，一个用来存放next指针<br>3.4 循环链表<br>将单链表中终端结点的指针端由空指针改为指向头结点，就使整个单链表形成一个环，这种头尾相接的单链表称为单循环链表，简称循环链表。<br>3.5 双向链表<br>在单链表的基础上，再在每个结点中设置一个指向其前驱结点的指针域，这样一个结点既可以指向它的前面又可以指向它的下一个，我们把这种链表称为双向链表。</p>
+<h2 id="4-栈和队列"><a href="#4-栈和队列" class="headerlink" title="4. 栈和队列"></a>4. 栈和队列</h2><h3 id="4-1-栈"><a href="#4-1-栈" class="headerlink" title="4.1 栈"></a>4.1 栈</h3><p>栈是限定<strong>仅在表尾进行插入和删除操作</strong>的线性表</p>
+<h4 id="4-1-1栈的存储结构"><a href="#4-1-1栈的存储结构" class="headerlink" title="4.1.1栈的存储结构"></a>4.1.1栈的存储结构</h4><p>栈是线性表的特例，所以栈的顺序存储结构其实就是线性表顺序存储结构的简称，我们简称为顺序栈。把<strong>栈顶放在单链表的头部</strong>，用链表来存储栈的的数据结构称为链栈。</p>
+<h3 id="4-2-队列"><a href="#4-2-队列" class="headerlink" title="4.2 队列"></a>4.2 队列</h3><p>队列是只允许<strong>在一端进行插入操作，而在另一端进行删除操作</strong>的线性表。</p>
+<p>4.2.1 循环队列<br>顺序表存储，顺序表成本高(移动指针)，引入循环队列。为了避免假溢出，让队列的头尾进行相连，这种头尾相连的顺序存储结构称为循环队列。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// 存储结构：</span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">&#123;</span>    
+  <span class="token keyword">int</span> data<span class="token punctuation">[</span>maxsize<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">//定义数组 </span>
+  <span class="token keyword">int</span> front<span class="token punctuation">;</span>         <span class="token comment">//队首指针   </span>
+  <span class="token keyword">int</span> rear<span class="token punctuation">;</span>          <span class="token comment">//队尾指针</span>
+<span class="token punctuation">&#125;</span>SqQuene<span class="token punctuation">;</span>            <span class="token comment">//顺序队列定义</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>4.2.2 链列<br>链队就是采用链式存储结构存储队列。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 链队类型定义：
+typedef struct
+&#123;
+    QNode *front;        &#x2F;&#x2F;队头指针
+    QNode *rear;         &#x2F;&#x2F;队尾指针
+&#125;LiQuene;                &#x2F;&#x2F;链队类型定义
+&#x2F;&#x2F; 节点定义
+typedef struct QNode
+&#123;
+    int data;             &#x2F;&#x2F;数据域
+    struct QNode *next;   &#x2F;&#x2F;指针域
+&#125;QNode;                   &#x2F;&#x2F;队结点类型定义<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="5-串"><a href="#5-串" class="headerlink" title="5. 串"></a>5. 串</h2><p>由零个或多个字符串组成的有限序列，又叫字符串。（串中的元素都是字符），通常使用顺序存储。</p>
+<h3 id="5-1-串的存储结构"><a href="#5-1-串的存储结构" class="headerlink" title="5.1 串的存储结构"></a>5.1 串的存储结构</h3><ul>
+<li><strong>串的顺序存储结构</strong>：串值的存储空间可在程序执行过程中动态分配。在计算机中有个“堆”的自由存储区，可由C语言的动态分配函数malloc( )和free( )来管理</li>
+<li><strong>串的链式存储结构</strong>：在考虑到空间浪费的问题上，所以一个结点可以存放一个字符，也可存放多个字符，最后一个结点若是未被占满时，用“#”或其他非串值字符补全。</li>
+</ul>
+<p>串和线性表的区别：线性表更关注的是单个元素的操作，比如查找一个元素，插入或删除一个元素，但串中更多的是查找子串位置，得到指定位置子串，替换子串等操作。<br>串的<strong>模式匹配算法</strong>：著名的模式匹配算法有两种：BF和KMP算法</p>
+<h2 id="6-数组和广义表"><a href="#6-数组和广义表" class="headerlink" title="6. 数组和广义表"></a>6. 数组和广义表</h2><h3 id="6-1数组"><a href="#6-1数组" class="headerlink" title="6.1数组"></a>6.1数组</h3><h4 id="6-1-1-定义"><a href="#6-1-1-定义" class="headerlink" title="6.1.1 定义"></a>6.1.1 定义</h4><p>由类型相同的数据元素构成的有序集合。数组一般不做插入和删除操作，所以一般采用顺序存储结构。</p>
+<ul>
+<li><p>一维数组可以看成线性表</p>
+</li>
+<li><p>二维数组是数据元素为线性表的线性表；</p>
+<h3 id="6-2-广义表"><a href="#6-2-广义表" class="headerlink" title="6.2 广义表"></a>6.2 广义表</h3><h4 id="6-2-1-定义"><a href="#6-2-1-定义" class="headerlink" title="6.2.1 定义"></a>6.2.1 定义</h4><p>广义表是线性表的推广，是一种多层次的数据结构，广义表的元素可以是单元素也可以是子表，而子表的元素还可以是子表。</p>
+<h4 id="6-2广义表存储结构"><a href="#6-2广义表存储结构" class="headerlink" title="6.2广义表存储结构"></a>6.2广义表存储结构</h4><p>通常采用链式存储结构，两种结构的节点:一种是表节点,用以表示列表,一种是元素节点,用以表示单元素.<br>表节点：可由三个域组成:标志域,指示表头的指针域和指示表尾的指针域。<br>元素节点只需要两个域:标志域和值域</p>
+<h2 id="7-树和二叉树"><a href="#7-树和二叉树" class="headerlink" title="7. 树和二叉树"></a>7. 树和二叉树</h2><p>是n(n&gt;&#x3D;0)个结点的有限集。线性表是一对一的结构，而树则是一对多的结构。</p>
+<h3 id="7-1-树的相关概念"><a href="#7-1-树的相关概念" class="headerlink" title="7.1 树的相关概念"></a>7.1 树的相关概念</h3></li>
+<li><p>高度： 节点到叶子节点最长边的总和</p>
+</li>
+<li><p>深度： 该节点到根节点最长边的总和</p>
+</li>
+<li><p>层级(level): 节点的Level是从1开始的，Level &#x3D; Depth+1，根节点的Level&#x3D;1</p>
+<h3 id="7-2-二叉树"><a href="#7-2-二叉树" class="headerlink" title="7.2 二叉树"></a>7.2 二叉树</h3><h4 id="7-2-1-二叉树类型"><a href="#7-2-1-二叉树类型" class="headerlink" title="7.2.1 二叉树类型"></a>7.2.1 二叉树类型</h4><p>二叉树是一个每个最结最多只能有两个分支的树</p>
+</li>
+<li><p>完美&#x2F;满二叉树：所有的子节点都包含两个子节点</p>
+</li>
+<li><p>完全二叉树： 除了最后一层都是满的（都有两个子节点），并且最后一层的节点是从左往右排列的。</p>
+</li>
+<li><p>完满二叉树：就是每个节点都有两个子节点。</p>
+<h4 id="7-2-2-二叉树的遍历"><a href="#7-2-2-二叉树的遍历" class="headerlink" title="7.2.2 二叉树的遍历"></a>7.2.2 二叉树的遍历</h4></li>
+<li><p>前序遍历：根结点 —&gt; 左子树 —&gt; 右子树</p>
+</li>
+<li><p>中序遍历：左子树 —&gt; 根结点 —&gt; 右子树</p>
+</li>
+<li><p>后序遍历：左子树 —&gt; 右子树 —&gt; 根结点</p>
+</li>
+<li><p>层次遍历：只需按层次遍历即可</p>
+</li>
+</ul>
+<p>深度优先遍历<br>广度优先遍历：类似层次遍历<br>先序，后序，中序针对二叉树。深度、广度针对普通树。</p>
+<h4 id="7-2-3-平衡二叉树"><a href="#7-2-3-平衡二叉树" class="headerlink" title="7.2.3 平衡二叉树"></a>7.2.3 平衡二叉树</h4><p>平衡二叉树是基于二分法的策略提高数据的查找速度的二叉树的数据结构；</p>
+<h4 id="7-2-4-B-树和B-树"><a href="#7-2-4-B-树和B-树" class="headerlink" title="7.2.4 B_树和B+树"></a>7.2.4 B_树和B+树</h4><p>B树和平衡二叉树稍有不同的是B树属于多叉树又名平衡多路查找树<br>B+跟B树不同B+树的非叶子节点不保存关键字记录的指针，只进行数据索引，B+树叶子节点保存了父节点的所有关键字记录的指针，所有数据地址必须要到叶子节点才能获取到。所以每次数据查询的次数都一样；</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h2 id="8-图"><a href="#8-图" class="headerlink" title="8. 图"></a>8. 图</h2><p>图是一种复杂的非线性结构。</p>
+<h3 id="8-1术语"><a href="#8-1术语" class="headerlink" title="8.1术语"></a>8.1术语</h3><ul>
+<li>顶点：图中的一个点</li>
+<li>边：连接两个顶点的线段叫做边，edge</li>
+<li>相邻的：一个边的两头的顶点称为是相邻的顶点</li>
+<li>度数：由一个顶点出发，有几条边就称该顶点有几度，或者该顶点的度数是几，degree</li>
+<li>路径：通过边来连接，按顺序的从一个顶点到另一个顶点中间经过的顶点集合</li>
+<li>简单路径：没有重复顶点的路径</li>
+<li>环：至少含有一条边，并且起点和终点都是同一个顶点的路径</li>
+<li>简单环：不含有重复顶点和边的环</li>
+<li>连通的：当从一个顶点出发可以通过至少一条边到达另一个顶点，我们就说这两个顶点是连通的</li>
+<li>连通图：如果一个图中，从任意顶点均存在一条边可以到达另一个任意顶点，我们就说这个图是个连通图</li>
+<li>无环图：是一种不包含环的图</li>
+<li>稀疏图：图中每个顶点的度数都不是很高，看起来很稀疏</li>
+<li>稠密图：图中的每个顶点的度数都很高，看起来很稠密</li>
+<li>二分图：可以将图中所有顶点分为两部分的图</li>
+</ul>
+<p>相关知识点：<br>邻接表：表示了图中与每一个顶点相邻的边集的集合<br>背包：只进不出，内容无序。<br>有向无环图：如果一个有向图从任意顶点出发无法经过若干条边回到该点，则这个图是一个有向无环图（DAG图）</p>
+<h2 id="9-哈希表"><a href="#9-哈希表" class="headerlink" title="9. 哈希表"></a>9. 哈希表</h2><h3 id="9-1-哈希函数"><a href="#9-1-哈希函数" class="headerlink" title="9.1 哈希函数"></a>9.1 哈希函数</h3><p>如果两个散列值是不相同的（根据同一函数），那么这两个散列值的原始输入也是不相同的。</p>
+<h3 id="9-2-哈希表定义"><a href="#9-2-哈希表定义" class="headerlink" title="9.2 哈希表定义"></a>9.2 哈希表定义</h3><p>哈希表就是一种以 键-值(key-indexed) 存储数据的结构，我们只要输入待查找的值即key，即可查找到其对应的值。<br>优缺点： 快速查找，方便增删。缺点： 不支持排序</p>
+<h2 id="10-JavaScript中的数据结构"><a href="#10-JavaScript中的数据结构" class="headerlink" title="10. JavaScript中的数据结构"></a>10. JavaScript中的数据结构</h2><h3 id="10-1-JavaScript-数据类型"><a href="#10-1-JavaScript-数据类型" class="headerlink" title="10.1 JavaScript 数据类型"></a>10.1 JavaScript 数据类型</h3><table>
+<thead>
+<tr>
+<th align="left"><strong>栈内存</strong></th>
+<th align="left"><strong>堆内存</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">存储基础数据类型</td>
+<td align="left">存储引用数据类型</td>
+</tr>
+<tr>
+<td align="left">按值访问</td>
+<td align="left">按引用访问</td>
+</tr>
+<tr>
+<td align="left">存储的值大小固定</td>
+<td align="left">存储的值大小不定，可动态调整</td>
+</tr>
+<tr>
+<td align="left">由系统自动分配内存空间</td>
+<td align="left">由程序员通过代码进行分配</td>
+</tr>
+<tr>
+<td align="left">主要用来执行程序</td>
+<td align="left">主要用来存放对象</td>
+</tr>
+<tr>
+<td align="left">空间小，运行效率高</td>
+<td align="left">空间大，但是运行效率相对较低</td>
+</tr>
+<tr>
+<td align="left">先进后出，后进先出</td>
+<td align="left">无序存储，可根据引用直接获取</td>
+</tr>
+</tbody></table>
+<p>V8中，Array 默认使用 顺序结构，数据到达一定量使用hash表结构；<br>参考文档：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/52b5a1879aa1">内存中的堆和栈到底是什么</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/oohaha_123/article/details/27371859">四种数据存储结构—顺序存储 链接存储 索引存储 散列存储</a><br><a target="_blank" rel="noopener" href="https://juejin.im/post/59fda59a51882546d71eb672">数据结构学习入门</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Evsward/p/dag.html">算法精解：DAG有向无环图</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/Evsward/p/bag.html">基础大扫荡——背包，栈，队列，链表一口气全弄懂</a></p>
 
                 
             </div>
@@ -512,7 +669,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://yanqic.cn/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/">https://yanqic.cn/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/</a>
+                    <a href="https://yanqic.cn/2022/03/23/shu-ju-jie-gou-ru-men/">https://yanqic.cn/2022/03/23/shu-ju-jie-gou-ru-men/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,7 +706,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/date-structure/">
+                                    <span class="chip bg-color">date_structure</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -721,9 +882,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2022/03/23/shu-ju-jie-gou-ru-men/">
                     <div class="card-image">
@@ -741,9 +903,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -752,6 +914,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -770,13 +933,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/18/stock-holding/">
+                <a href="/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="stock holding">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="这是一篇中文文章">
                         
-                        <span class="card-title">stock holding</span>
+                        <span class="card-title">这是一篇中文文章</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -787,7 +950,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
                             </span>
                         <span class="publish-author">
                             
@@ -796,14 +959,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/stock/">
-                        <span class="chip bg-color">stock</span>
-                    </a>
-                    
                 </div>
                 
             </div>
