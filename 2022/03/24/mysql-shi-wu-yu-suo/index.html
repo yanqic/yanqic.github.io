@@ -4,8 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="这是一篇中文文章, BLOG">
-    <meta name="description" content="今天我要给大家介绍一下今年做的一个项目：sablejs。项目的部分代码已经上传到了 Github，但 sablejs 1.x 版本的核心代码部分并没有对外公开，具体原因大家可以参考 Github Issues 的 sablejs 2.0 计">
+    <meta name="keywords" content="mysql事务与锁, BLOG">
+    <meta name="description" content="事务特性
+原子性
+隔离性
+持久性
+一致性
+
+并发事务存在问题
+脏读（Dirty read）: 当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +24,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>这是一篇中文文章 | BLOG</title>
+    <title>mysql事务与锁 | BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -309,12 +316,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">这是一篇中文文章</h1>
+                    <h1 class="description center-align post-title">mysql事务与锁</h1>
                 </div>
             </div>
         </div>
@@ -428,12 +435,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/mysql/">
+                                <span class="chip bg-color">mysql</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%90%8E%E7%AB%AF/">
+                                <span class="chip bg-color">后端</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                技术
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -442,7 +466,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2022-03-23
+                    2022-03-24
                 </div>
                 
 
@@ -466,26 +490,94 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>今天我要给大家介绍一下今年做的一个项目：sablejs。项目的部分代码已经上传到了 Github，但 sablejs 1.x 版本的核心代码部分并没有对外公开，具体原因大家可以参考 Github Issues 的 sablejs 2.0 计划。大约明年 2.0 应该会产出稳定版本，到时候会完整放出对应的全部项目代码，但是目前 sablejs 1.x 版本是可用的。</p>
-<p>这是我第二次作为讲师参加 GMTC，之前也是在 GMTC 深圳站有聊一些 WebAssembly 的内容，今天的议题其实和之前的议题是有一些关联性的，算是之前议题的进一步落地和思考。当然内容就和 WebAssembly 的关系不是很大了。在业余时间我有做过一些技术专栏文章的编写，同时也参与一些开源项目，大家如果有兴趣的话可以去看一看，然后帮忙点个 Star。</p>
-<p>今天的分享我会先讲述一下项目的起因，其次是整个项目我们想达到的目标，接着就是我们在 sablejs 里应用的性能优化的思路和方案，这一块我觉得应该是对大家直接收益最高的部分，最后就是简要阐述一下 sablejs 2.0 的后期规划和开源计划。</p>
-<p>为什么要做 sablejs？</p>
-<p>我们先从项目背景说起。sablejs 的产生实际上是因为友验人机识别验证码这个产品，人机识别验证码这个产品大家应该都或多或少有相关的了解，如果我们简单的来理解的话，你完全可以把它理解为滑动验证码。目前非常多公司都有提供类似的产品和服务方案，包括且不限于极验、腾讯的防水墙、阿里人机验证、网易的易盾等。</p>
-<p>在友验人机识别验证码这个产品里有三块核心的功能，分别是虚拟机保护，设备的特征识别以及 AI 的行为判断。对于设备的特征识别和 AI 的行为判断这两个功能而言，开源社区里有非常成熟的解决方案，例如 Tensorflow。因此使用类似的开源方案然后辅以数据，在我们的实践和落地当中是能够获取到比较精准的识别成功率的。</p>
-<p>但对于虚拟机保护而言，特别是针对于 Web 的虚拟机保护，不管是开源还是商用方案都非常的不尽人意。说到这儿可能有人会疑惑，这个产品为什么还需要虚拟机保护这么复杂的东西？让我们看一看产品的执行逻辑，就应该能清晰的知道原因了。</p>
-<p>从上图我们可以看到验证的整个流程包含了：获取初始化参数、收集客户端特征信息、获取验证挑战、提交特征信息及用户答案、后端特征识别和答案比对这五个关键步骤。其中最核心的，同时也是最脆弱的部分就是客户端的特征收集。之所以要收集客户端的特征信息，是因为我们要以此来产出一个唯一的设备指纹来定位到唯一用户，以便帮助我们的模型来确认当前用户是否存在行为的异常，及时对恶意请求进行阻断，减少企业的被攻击风险。</p>
-<p>但我们也知道 Web 自身是非常开放和包容的，有非常多帮助开发者开发调试的工具，比如 Chrome 的开发者工具。但这也带来了许多问题，其中之一就是，不管我们对代码进行多高强度的混淆，借助开发者工具的帮助我们都可以非常容易的对关键代码进行调试。因此如果想隐藏客户端特征信息的收集逻辑，即使进行了非常复杂的源代码混淆，我们仍然可以较为容易的进行逻辑的调试并且复原原有的代码逻辑。大家有兴趣的话可以去百度或 Google 一下现有人机识别相关产品的破解文章，应该可以看到非常非常多关于此类问题的探讨。</p>
-<p>为了解决这个问题，我们就势必需要自行实现虚拟机保护，依靠这种方式大大增加反编译的难度，以此有效达到防恶意调试的目的。</p>
-<p>怎么去实现虚拟机保护？</p>
-<p>对于 Web 端而言的话，要实现虚拟机保护最简单的方案实际上是通过 WebAssembly。由于 WebAssembly 它本身是完全独立于 JavaScript 引擎的，同时 WebAssembly 完全可以编译执行代码为二进制内容，因此在反调试上是有非常大的优势的。当然，考虑到大部分 Web 的同学更熟悉编写 JavaScript，我们便可以将 quickjs 和 WebAssembly 做一个结合，这样就能够得到一个非常完美的虚拟机保护方案了。</p>
-<p>这个其实是我在之前 GMTC 上聊到过的思路，当然这个思路最后催生出了 SecurityWorker 并开源了出来。对于其他厂商而言，比如 Figma，他们也利用了同样的思路并将其用于用户 Web 插件的执行。尽管这两者用途不一样，但殊途同归，彼此的目的都是差不多的。</p>
-<p>互调过程中并不安全</p>
-<p>在整个实现落地的过程中，我们发现实际上 WebAssembly 这套方案也存在着一些问题，最明显的就是 WebAssembly 和 JavaScript 互相调用的安全性问题。究其原因在于 WebAssembly 和 JavaScript 是两套独立的执行环境，因此如果 WebAssembly 涉及到 DOM、BOM 的调用的时候，它务必需要跟 JavaScript 去做一些通信。那 WebAssembly 它是怎么去做通信的呢？答案是 WebAssembly 会直接使用 eval 来执行对应的 JavaScript 代码字符串。</p>
-<p>eval 的使用是存在非常大的安全隐患的，因为我们完全有能力在 WebAssembly 执行前对 eval 进行复写拦截，从而获取到里面执行的 JavaScript 代码字符串。那我们怎么去解决这个问题呢？最简单的思路实际上就是我们让所有的相关执行都在同一个执行上下文环境中，这样就不存在通信的过程，也就不会存在此类的问题了。</p>
-<p>根据这个思路，因为我们是需要访问 DOM、BOM 的 API 的，同时我们还需要限定在一个执行上下文环境中，那么我们可不可以尝试使用 JavaScript 编写一个 JavaScript 的解释器？参考了 Google Recaptcha 的相关文章后，我们认为这种思路是完全行得通的，同时开源社区也给出了非常多类似的实现，包括像 eval5、sval、sandboxjs……当然，他们也存在非常多的问题需要改进。</p>
-<p>性能太差、VM 初始化时间过长</p>
-<p>如果这么做，第一个我们就会面对的问题便是：解释器的性能。由于 JavaScript 自身是非常灵活，即使我们拥有了 V8 这样的底层执行引擎，从直觉上要基于 JavaScript 写出一个性能尚可的 JavaScript 解释器也会是个不小的挑战，这从各类开源实现的 benchmark 分数也可以得知。其次，目前所有能找到的相关开源实现都比较简陋，主要目的是供学习参考，自身并没有对 test262 的单测进行覆盖率的测试，用在实际生产中是存在比较大的风险的。</p>
-<p>与此同时，我们也调研了一些商业公司的相关类似实现，其中包括腾讯以及字节。从调研结果上来看，他们的实现对于这块性能的优化也还是有很长的路需要走。除此之外，其 VM 实现的初始化耗时过长也是在实际生产中比较致命的一点。</p>
+                <h3 id="事务特性"><a href="#事务特性" class="headerlink" title="事务特性"></a>事务特性</h3><ul>
+<li>原子性</li>
+<li>隔离性</li>
+<li>持久性</li>
+<li>一致性</li>
+</ul>
+<h3 id="并发事务存在问题"><a href="#并发事务存在问题" class="headerlink" title="并发事务存在问题"></a><strong>并发</strong>事务存在问题</h3><ul>
+<li><strong>脏读（Dirty read）:</strong> 当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据，那么另外一个事务读到的这个数据是“脏数据”，依据“脏数据”所做的操作可能是不正确的。</li>
+<li><strong>丢失修改（Lost to modify）:</strong> 指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。 例如：事务 1 读取某表中的数据 A&#x3D;20，事务 2 也读取 A&#x3D;20，事务 1 修改 A&#x3D;A-1，事务 2 也修改 A&#x3D;A-1，最终结果 A&#x3D;19，事务 1 的修改被丢失。</li>
+<li><strong>不可重复读（Unrepeatableread）:</strong> 指在一个事务内多次读同一数据。在这个事务还没有结束时，另一个事务也访问该数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。</li>
+<li><strong>幻读（Phantom read）:</strong> 幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。</li>
+</ul>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><ul>
+<li><strong>READ-UNCOMMITTED(读取未提交)：</strong> 最低的隔离级别，允许读取尚未提交的数据变更，<strong>可能会导致脏读、幻读或不可重复读</strong>。</li>
+<li><strong>READ-COMMITTED(读取已提交)：</strong> 允许读取并发事务已经提交的数据，<strong>可以阻止脏读，但是幻读或不可重复读仍有可能发生</strong>。</li>
+<li><strong>REPEATABLE-READ(可重复读)：</strong> 对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，<strong>可以阻止脏读和不可重复读，但幻读仍有可能发生</strong>。</li>
+</ul>
+<p><strong>SERIALIZABLE(可串行化)：</strong> 最高的隔离级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，<strong>该级别可以防止脏读、不可重复读以及幻读</strong>。</p>
+<p>InnoDB 存储引擎的默认支持的隔离级别是  <strong>REPEATABLE-READ（可重读）</strong>，但是可以通过应用加锁读（例如  <code>select * from table for update</code>  语句）来保证不会产生幻读，而这个加锁度使用到的机制就是 Next-Key Lock 锁算法。从而达到了 SQL 标准的  <strong>SERIALIZABLE(可串行化)</strong>  隔离级别。</p>
+<h2 id="锁的分类"><a href="#锁的分类" class="headerlink" title="锁的分类"></a>锁的分类</h2><h3 id="读写分类"><a href="#读写分类" class="headerlink" title="读写分类"></a>读写分类</h3><ul>
+<li>LOCK_IS：读意向锁；</li>
+<li>LOCK_IX：写意向锁；</li>
+<li>LOCK_S：读锁；又称读锁，若事务 T 对数据对象 A 加上 S 锁，则事务 T 可以读 A 但不能修改 A，其他事务只能再对 A 加 S 锁，而不能加 X 锁，直到 T 释放 A 上的 S 锁。</li>
+<li>LOCK_X：写锁；又称写锁。若事务 T 对数据对象 A 加上 X 锁，事务 T 可以读 A 也可以修改 A，其他事务不能再对 A 加任何锁，直到 T 释放 A 上的锁</li>
+<li>LOCK_AUTO_INC：自增锁（AUTO_INC 表锁 0 ）</li>
+</ul>
+<p>innodb_autoinc_lock_mode &#x3D; 1 （consecutive lock mode） 自增锁分类设置<br>兼容性：</p>
+<ul>
+<li>意向锁之间互不冲突；</li>
+<li>S 锁只和 S&#x2F;IS 锁兼容，和其他锁都冲突；</li>
+<li>X 锁和其他所有锁都冲突；</li>
+<li>AI 锁只和意向锁兼容；</li>
+</ul>
+<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><ul>
+<li>表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。（DDL,无索引更新，事务级别为 RR,<code>Serializable）</code></li>
+<li>行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。</li>
+<li>Gap 锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。<blockquote>
+<p><strong>InnoDB 行锁是通过给索引上的索引项加锁来实现的，这一点 MySQL 与 Oracle 不同，后者是通过在数据块中对相应数据行加锁来实现的。 InnoDB 这种行锁实现特点意味着：只有通过**<strong>索引*</strong>*条件检索数据，InnoDB 才使用行级锁，否则，InnoDB 将使用</strong>Next-Key Locks<strong>！(</strong><code>RU</code>和<code>RC</code>，无论条件列上是否有索引，都不会锁表，只锁行！**)**</p>
+</blockquote>
+</li>
+</ul>
+<p>应用：<br>select * from table where pId &#x3D; 2 for update；<br>如果 pid 没有索引，会全表加行锁，然后扫码释放。 如果有一级索引，直接在该一级索引行加锁；如果是二级索引，在该二级索引加锁,查找该行一级索引，加锁</p>
+<h3 id="悲观锁和乐观锁"><a href="#悲观锁和乐观锁" class="headerlink" title="悲观锁和乐观锁"></a>悲观锁和乐观锁</h3><p>悲观锁和乐观锁是抽象应用，不真实存在这个锁</p>
+<ul>
+<li>悲观锁</li>
+</ul>
+<p>正如其名，它指的是对数据被外界（包括本系统当前的其他事务，以及来自外部系统的事务处理）修改持保守态度，因此，在整个数据处理过程中，将数据处于锁定状态。悲观锁的实现，往往依靠数据库提供的锁机制（也只有数据库层提供的锁机制才能真正保证数据<strong>访问的排他性</strong>，否则，即使在本系统中实现了加锁机制，也无法保证外部系统不会修改数据）。<br>在悲观锁的情况下，为了保证事务的隔离性，就需要一致性锁定读。读取数据时给加锁，其它事务无法修改这些数据。修改删除数据时也要加锁，其它<strong>事务无法读取这些数据</strong>。</p>
+<ul>
+<li>乐观锁</li>
+</ul>
+<p>相对悲观锁而言，乐观锁机制采取了更加宽松的加锁机制。悲观锁大多数情况下依靠数据库的锁机制实现，以保证操作最大程度的独占性。但随之而来的就是数据库性能的大量开销，特别是对长事务而言，这样的开销往往无法承受。<br>乐观锁，大多是基于<strong>数据版本</strong>（ Version ）记录机制实现。何谓数据版本？即为数据增加一个版本标识，在基于数据库表的版本解决方案中，一般是通过为数据库表增加一个 “version” 字段来实现。读取出数据时，将此版本号一同读出，之后更新时，对此版本号加一。此时，将提交数据的版本数据与数据库表对应记录的当前版本信息进行比对，如果提交的数据版本号大于数据库表当前版本号，则予以更新，否则认为是过期数据。</p>
+<h3 id="MVCC-在-MySQL-的-InnoDB-中的实现-乐观锁"><a href="#MVCC-在-MySQL-的-InnoDB-中的实现-乐观锁" class="headerlink" title="MVCC 在 MySQL 的 InnoDB 中的实现(乐观锁)"></a>MVCC 在 MySQL 的 InnoDB 中的实现(乐观锁)</h3><p>在 InnoDB 中，会在每行数据后添加两个额外的隐藏的值来实现 MVCC，这两个值一个记录这行数据何时被创建，另外一个记录这行数据何时过期（或者被删除）。 在实际操作中，存储的并不是时间，而是事务的版本号，每开启一个新事务，事务的版本号就会递增。 在可重读 Repeatable reads 事务隔离级别下：</p>
+<ul>
+<li>SELECT 时，读取创建版本号&lt;&#x3D;当前事务版本号，删除版本号为空或&gt;当前事务版本号。</li>
+<li>INSERT 时，保存当前事务版本号为行的创建版本号</li>
+<li>DELETE 时，保存当前事务版本号为行的删除版本号</li>
+<li>UPDATE 时，插入一条新纪录，保存当前事务版本号为行创建版本号，同时保存当前事务版本号到原来删除的行</li>
+</ul>
+<p>通过 MVCC，虽然每行记录都需要额外的存储空间，更多的行检查工作以及一些额外的维护工作，但可以减少锁的使用，大多数读操作都不用加锁，读数据操作很简单，性能很好，并且也能保证只会读取到符合标准的行，也只锁住必要行。</p>
+<h3 id="“读”与“读”的区别"><a href="#“读”与“读”的区别" class="headerlink" title="“读”与“读”的区别"></a>“读”与“读”的区别</h3><ul>
+<li>快照读：就是 select<ul>
+<li>select * from table ….;</li>
+</ul>
+</li>
+<li>当前读：特殊的读操作，插入&#x2F;更新&#x2F;删除操作，属于当前读，处理的都是当前的数据，需要加锁。<ul>
+<li>select * from table where ? lock in share mode; （<strong>当前读，s 锁</strong>）</li>
+<li>select * from table where ? for update; （<strong>当前读,x 锁</strong>）</li>
+<li>insert;</li>
+<li>update ;</li>
+<li>delete;</li>
+</ul>
+</li>
+</ul>
+<h3 id="Next-Key-锁"><a href="#Next-Key-锁" class="headerlink" title="Next-Key 锁"></a>Next-Key 锁</h3><p>Next-Key 锁是行锁和 GAP（间隙锁）的合并，行锁上文已经介绍了，接下来说下 GAP 间隙锁。<br>GAP 锁是避免别的事务插入数据造成问题。（隔离级别为<code>Repeatable Read</code>和<code>Serializable</code>时，就会存在间隙锁）<br>事务 A<br>update class_teacher set class_name&#x3D;’初一一班’ where teacher_id&#x3D;20; &#x2F;&#x2F; 锁住 teacher_id 开始到结束区间段;<br>事务 B<br>insert into class_teacher values (null,’初三五班’,10); &#x2F;&#x2F; 需要等待<br>事务 C<br>insert into class_teacher values (null,’初三五班’,40);</p>
+<h3 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h3><ul>
+<li><strong>意向共享锁</strong>(IS 锁):一个事务在获取（任何一行&#x2F;或者全表）S 锁之前，一定会先在所在的表上加 IS 锁。</li>
+<li><strong>意向排他锁</strong>(IX 锁):一个事务在获取（任何一行&#x2F;或者全表）X 锁之前，一定会先在所在的表上加 IX 锁。</li>
+</ul>
+<h4 id="意向锁作用"><a href="#意向锁作用" class="headerlink" title="意向锁作用"></a>意向锁作用</h4><p>假设事务 T1，用 X 锁来锁住了表上的几条记录，那么此时表上存在 IX 锁，即意向排他锁。那么此时事务 T2 要进行<code>LOCK TABLE … WRITE</code>的表级别锁的请求，可以直接根据意向锁是否存在而判断是否有锁冲突。</p>
+<p>锁优化：<br>在查询字段尽量加索引，索引值尽量差异读较大。<br><strong>mysql 默认是 RR 隔离级别，使用 next-key 锁；锁加在聚簇索引上</strong><br><strong>RR 解决幻读原理：</strong><br>查询：快照读，使用 mvcc 快照，基于 undolog, 事务版本号<br>更新：当前读，使用 next-key 锁；<br>避免升级表锁：</p>
+<ul>
+<li>alter table;</li>
+<li>更新表格加 where 条件，避免 查询条件类型转化；</li>
+<li>控制事务大小，减少锁定的资源量和锁定时间长度。</li>
+<li>所有的数据检索都通过索引来完成，从而避免因为无法通过索引加锁而升级为表锁。</li>
+<li>减少基于范围的数据检索过滤条件，避免因为间隙锁带来的负面影响而锁定了不该锁定的数据。</li>
+</ul>
+<p>参考文档:<br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/08/20/innodb-lock.html">https://tech.meituan.com/2014/08/20/innodb-lock.html</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/rjzheng/p/9950951.html">https://www.cnblogs.com/rjzheng/p/9950951.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67793185">https://zhuanlan.zhihu.com/p/67793185</a></p>
 
                 
             </div>
@@ -512,7 +604,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://yanqic.cn/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/">https://yanqic.cn/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/</a>
+                    <a href="https://yanqic.cn/2022/03/24/mysql-shi-wu-yu-suo/">https://yanqic.cn/2022/03/24/mysql-shi-wu-yu-suo/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,7 +641,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/mysql/">
+                                    <span class="chip bg-color">mysql</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%90%8E%E7%AB%AF/">
+                                    <span class="chip bg-color">后端</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -721,9 +821,64 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2022/03/24/mysql-shi-wu-yu-suo/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="mysql事务与锁">
+                        
+                        <span class="card-title">mysql事务与锁</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/mysql/">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%90%8E%E7%AB%AF/">
+                        <span class="chip bg-color">后端</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2022/03/23/shu-ju-jie-gou-ru-men/">
                     <div class="card-image">
@@ -741,9 +896,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -757,51 +912,6 @@
                     
                     <a href="/tags/date-structure/">
                         <span class="chip bg-color">date_structure</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/03/18/stock-holding/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="stock holding">
-                        
-                        <span class="card-title">stock holding</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-18
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            yanqic
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/stock/">
-                        <span class="chip bg-color">stock</span>
                     </a>
                     
                 </div>
