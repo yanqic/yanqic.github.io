@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yanqic.cn/friends/index.html</loc>
+    
+    <lastmod>2022-03-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yanqic.cn/2022/03/24/mysql-shi-wu-yu-suo/</loc>
     
     <lastmod>2022-03-24</lastmod>
@@ -112,7 +121,7 @@
 
   <url>
     <loc>https://yanqic.cn/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -120,28 +129,28 @@
   
   <url>
     <loc>https://yanqic.cn/tags/stock/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/date-structure/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/mysql/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -150,7 +159,7 @@
   
   <url>
     <loc>https://yanqic.cn/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2022-03-24</lastmod>
+    <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

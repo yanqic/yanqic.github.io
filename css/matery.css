@@ -241,7 +241,7 @@ mark {
 }
 
 .bg-color {
-    background-image: linear-gradient(to right, #4cbf30 0%, #0f9d58 100%);
+    background-image: linear-gradient(to right, #26a69a 0%, #e18f3c 100%);
 }
 
 .text-color {
@@ -257,7 +257,7 @@ mark {
     position: fixed;
     bottom: 0;
     z-index: 300;
-    background: linear-gradient(to right, #4cbf30 0%, #0f9d58 100%);
+    background-image: linear-gradient(to right, #26a69a 0%, #e18f3c 100%);
     opacity: 0.8;
 }
 
@@ -1834,7 +1834,7 @@ footer {
 }
 
 footer .social-statis {
-    margin-top: 10px;
+    margin-top: -4px;
     position: relative;
 }
 
@@ -1844,6 +1844,7 @@ footer a {
 
 footer .copy-right {
     color: #dbdbdb;
+    margin-bottom: 4px;
 }
 
 /*搜索层样式*/
@@ -1908,7 +1909,7 @@ p.search-result-summary{
 }
 
 .top-scroll .btn-floating {
-    background: linear-gradient(to bottom right, #FF5E3A 0%, #FF2A68 100%);
+    background: linear-gradient(to bottom right, #26a69a 0%, #e18f3c 100%);
     width: 48px;
     height: 48px;
 }
