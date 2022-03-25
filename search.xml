@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>后端缓存原理及应用</title>
+      <link href="/2022/03/25/hou-duan-huan-cun-yuan-li-ji-ying-yong/"/>
+      <url>/2022/03/25/hou-duan-huan-cun-yuan-li-ji-ying-yong/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-避免进程内缓存，使用服务缓存"><a href="#1-避免进程内缓存，使用服务缓存" class="headerlink" title="1.避免进程内缓存，使用服务缓存"></a>1.避免进程内缓存，使用服务缓存</h2><p> <br><strong>为什么不能频繁使用进程内缓存？</strong><br><strong>答</strong>：<strong>分层架构设计，有一条准则</strong>：站点层、服务层要做到无数据无状态，这样才能任意的加节点水平扩展，数据和状态尽量存储到后端的数据存储服务，例如数据库服务或者缓存服务。 </p><h2 id="2-避免使用缓存进行通信"><a href="#2-避免使用缓存进行通信" class="headerlink" title="2.避免使用缓存进行通信"></a>2.避免使用缓存进行通信</h2><p>  pull 模式延时；<br>  服务化的原则，数据是私有的（本质也是解耦）：</p><ul><li>service层会向数据的需求方屏蔽下层存储引擎，分库，chace的复杂</li><li>任何需求方不能绕过service读写其后端的数据</li></ul><h2 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3.缓存雪崩"></a>3.缓存雪崩</h2><p>什么时候会产生雪崩？<br>答：如果缓存挂掉，所有的请求会压到数据库，如果未提前做容量预估，可能会把数据库压垮（在缓存恢复之前，数据库可能一直都起不来），导致系统整体不可服务。<br> <br>解决方案：缓存集群，水平切分 </p><h2 id="4-避免调用方缓存"><a href="#4-避免调用方缓存" class="headerlink" title="4.避免调用方缓存"></a>4.避免调用方缓存</h2><p>调用方本地缓存，然后判断是否请求服务获取数据<br> <br>调用方需要关注数据获取的复杂性<br>更严重的，服务修改db里的数据，淘汰了服务cache之后，难以通知调用方淘汰其cache里的数据，从而导致数据不一致 </p><h2 id="5-多服务共用缓存实例"><a href="#5-多服务共用缓存实例" class="headerlink" title="5.多服务共用缓存实例"></a>5.多服务共用缓存实例</h2><p>可能导致key冲突，彼此冲掉对方的数据<br> <br>画外音：可能需要服务A和服务B提前约定好了key，以确保不冲突，常见的约定方式是使用namespace:key的方式来做key。<br>不同服务对应的数据量，吞吐量不一样，共用一个实例容易导致一个服务把另一个服务的热数据挤出去<br>共用一个实例，会导致服务之间的耦合，与微服务架构的“数据库，缓存私有”的设计原则是相悖的</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 后端 </tag>
+            
+            <tag> 存储 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mysql事务与锁</title>
       <link href="/2022/03/24/mysql-shi-wu-yu-suo/"/>
       <url>/2022/03/24/mysql-shi-wu-yu-suo/</url>

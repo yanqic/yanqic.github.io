@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yanqic.cn/2022/03/25/hou-duan-huan-cun-yuan-li-ji-ying-yong/</loc>
+    
+    <lastmod>2022-03-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yanqic.cn/friends/index.html</loc>
     
     <lastmod>2022-03-25</lastmod>
@@ -150,6 +159,13 @@
   
   <url>
     <loc>https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/</loc>
+    <lastmod>2022-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/</loc>
     <lastmod>2022-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
