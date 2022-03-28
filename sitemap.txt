@@ -1,3 +1,4 @@
+https://yanqic.cn/2022/03/28/es-sou-suo-pi-pei-you-hua/
 https://yanqic.cn/2022/03/25/hou-duan-huan-cun-yuan-li-ji-ying-yong/
 https://yanqic.cn/friends/index.html
 https://yanqic.cn/2022/03/24/mysql-shi-wu-yu-suo/
@@ -18,4 +19,5 @@ https://yanqic.cn/tags/date-structure/
 https://yanqic.cn/tags/mysql/
 https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/
 https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/
+https://yanqic.cn/tags/elasticsearch/
 https://yanqic.cn/categories/%E6%8A%80%E6%9C%AF/
