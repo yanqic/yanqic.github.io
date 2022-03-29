@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yanqic.cn/2022/03/29/xiao-xi-dui-lie/</loc>
+    
+    <lastmod>2022-03-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yanqic.cn/2022/03/28/es-sou-suo-pi-pei-you-hua/</loc>
     
     <lastmod>2022-03-28</lastmod>
@@ -182,6 +191,13 @@
   
   <url>
     <loc>https://yanqic.cn/tags/elasticsearch/</loc>
+    <lastmod>2022-03-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/tags/queue/</loc>
     <lastmod>2022-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
