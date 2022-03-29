@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="消息队列, Coding,technology,Photography">
+    <meta name="keywords" content="消息队列入门指南, Coding,technology,Photography">
     <meta name="description" content="概览
 1. 消息队列应用场景1.1 异步处理
 1.2 流量削峰
@@ -21,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>消息队列 | BLOG</title>
+    <title>消息队列入门指南 | BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">消息队列</h1>
+                    <h1 class="description center-align post-title">消息队列入门指南</h1>
                 </div>
             </div>
         </div>
@@ -504,7 +504,7 @@
 </ul>
 <p>• 死信队列<br>可以为每个队列设置一个回退队列，它和死信队列都是为异常的处理提供的一种机制保障。实际情况下，回退队列的角色可以由死信队列和重试队列来扮演。<br>• 重试队列<br>重试越多次重新投递的时间就越久，为此需要设置一个上限，超过投递次数就入死信队列。重试队列与延迟队列有相同的地方，都是需要设置延迟级别，它们彼此的区别是：延迟队列动作由内部触发，重试队列动作由外部消费端触发；延迟队列作用一次，而重试队列的作用范围会向后传递。</p>
 <h3 id="1-6-消费模式分类"><a href="#1-6-消费模式分类" class="headerlink" title="1.6 消费模式分类"></a>1.6 消费模式分类</h3><p>消费模式分为推（push）模式和拉（pull）模式。<br>• 广播消费<br>• 消息一般有两种传递模式：点对点（P2P，Point-to-Point）模式和发布&#x2F;订阅（Pub&#x2F;Sub）模式<br>RabbitMQ 是一种典型的点对点模式，而 Kafka 是一种典型的发布订阅模式。<br>RabbitMQ 中可以通过设置交换器类型来实现发布订阅模式而达到广播消费的效果，Kafka 中也能以点对点的形式消费，你完全可以把其消费组（consumer group）的概念看成是队列的概念。不过对比来说，Kafka 中因为有了消息<strong>回溯功能</strong>的存在(基于 offset)，对于广播消费的力度支持比 RabbitMQ 的要强<br>• 消息回溯<br>• 消息堆积+持久化<br>消息堆积分内存式堆积和磁盘式堆积。RabbitMQ 是典型的内存式堆积，但这并非绝对，在某些条件触发后会有换页动作来将内存中的消息换页到磁盘（换页动作会影响吞吐），或者直接使用惰性队列来将消息直接持久化至磁盘中。Kafka 是一种典型的磁盘式堆积</p>
-<h2 id="2-主流-MQ-介绍及对比"><a href="#2-主流-MQ-介绍及对比" class="headerlink" title="2. 主流 MQ 介绍及对比"></a>2. 主流 MQ 介绍及对比</h2><h3 id="2-1-Rabbitmq"><a href="#2-1-Rabbitmq" class="headerlink" title="2.1 Rabbitmq"></a>2.1 Rabbitmq</h3><p>优点：轻量，迅捷，容易部署和使用，拥有灵活的<strong>路由</strong>配置 amqp 协议，保证消息<strong>严格顺序性</strong>; 默认<strong>push 模式</strong><br>缺点：性能和吞吐量较差，消息堆积的支持不好，不易进行二次开发，消息不可回溯，队列模式，一对多消费支持不好；<br>**</p>
+<h2 id="2-主流-MQ-介绍及对比"><a href="#2-主流-MQ-介绍及对比" class="headerlink" title="2. 主流 MQ 介绍及对比"></a>2. 主流 MQ 介绍及对比</h2><h3 id="2-1-Rabbitmq"><a href="#2-1-Rabbitmq" class="headerlink" title="2.1 Rabbitmq"></a>2.1 Rabbitmq</h3><p>优点：轻量，迅捷，容易部署和使用，拥有灵活的<strong>路由</strong>配置 amqp 协议，保证消息<strong>严格顺序性</strong>; 默认<strong>push 模式</strong><br>缺点：性能和吞吐量较差，消息堆积的支持不好，不易进行二次开发，消息不可回溯，队列模式，一对多消费支持不好；</p>
 <h3 id="2-2-Rocketmq"><a href="#2-2-Rocketmq" class="headerlink" title="2.2 Rocketmq"></a>2.2 Rocketmq</h3><p>优点：性能好，稳定可靠，有活跃的中文社区，特点响应快，适合<strong>在线实时业务处理</strong><br>缺点：兼容性较差，但随意影响力的扩大，该问题会有改善，队列有序，topic 无序;<strong>(解决方案</strong>:用一致性哈希算法，计算出队列 ID，指定队列 ID 发送，这样可以保证相同的订单&#x2F;用户的消息总被发送到同一个队列上，就可以确保严格顺序了。)<img src="https://img.yanqic.cn/blog/202203291212813.png?imageslim" alt="image.png"></p>
 <h3 id="2-3-Kafka"><a href="#2-3-Kafka" class="headerlink" title="2.3 Kafka"></a>2.3 Kafka</h3><p>优点：拥有强大的<strong>性能及吞吐量</strong>，兼容性很好，适合大数据、日志处理；(顺序读写,zero copy 实现无内存交换, pagecahce 优化磁盘 io); pull 模式(基于长轮询)；<br>缺点：由于“攒一波再处理”导致<strong>延迟比较高，可以通过配置修改批次数量；</strong></p>
 <h3 id="2-4-Pulsar："><a href="#2-4-Pulsar：" class="headerlink" title="2.4 Pulsar："></a>2.4 Pulsar：</h3><p>采用存储和计算分离的设计，是消息队里产品中黑马，值得持续关注</p>
@@ -764,9 +764,9 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="消息队列">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="消息队列入门指南">
                         
-                        <span class="card-title">消息队列</span>
+                        <span class="card-title">消息队列入门指南</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
