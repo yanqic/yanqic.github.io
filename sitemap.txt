@@ -6,8 +6,8 @@ https://yanqic.cn/2022/03/24/mysql-shi-wu-yu-suo/
 https://yanqic.cn/2022/03/23/shu-ju-jie-gou-ru-men/
 https://yanqic.cn/2022/03/23/zhe-shi-yi-pian-zhong-wen-wen-zhang/
 https://yanqic.cn/2022/03/18/stock-holding/
-https://yanqic.cn/tags/index.html
 https://yanqic.cn/contact/index.html
+https://yanqic.cn/tags/index.html
 https://yanqic.cn/categories/index.html
 https://yanqic.cn/about/index.html
 https://yanqic.cn/2022/03/17/second-blog/
@@ -15,11 +15,11 @@ https://yanqic.cn/404/index.html
 https://yanqic.cn/2022/03/09/my-first-blog/
 https://yanqic.cn/2022/03/09/hello-world/
 https://yanqic.cn/
-https://yanqic.cn/tags/stock/
-https://yanqic.cn/tags/date-structure/
-https://yanqic.cn/tags/mysql/
-https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/
-https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/
 https://yanqic.cn/tags/elasticsearch/
+https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/
+https://yanqic.cn/tags/mysql/
+https://yanqic.cn/tags/stock/
+https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/
 https://yanqic.cn/tags/queue/
+https://yanqic.cn/tags/date-structure/
 https://yanqic.cn/categories/%E6%8A%80%E6%9C%AF/

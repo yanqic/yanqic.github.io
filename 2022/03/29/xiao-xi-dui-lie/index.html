@@ -5,9 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="消息队列, Coding,technology,Photography">
-    <meta name="description" content="1. 消息队列应用场景1.1异步处理
-1.2流量削峰基于令牌桶实现限流
-1.3 服务解耦我们知道订单是电商系统中比较核心的数据，当一个新订单创建时：支付系统需要发起支付流程；风控系统需要审核订单的合法性；客服系统需要给用户发短信告知用户；经">
+    <meta name="description" content="概览
+1. 消息队列应用场景1.1 异步处理
+1.2 流量削峰
+基于令牌桶实现限流
+1.3 服务解耦我们知道订单是电商系统中比较核心的数据，当一个新订单创建时：支付系统需要发起支付流程；风控系统需要审核订单的合法性；客服系统需要给用户发短信">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -485,27 +487,26 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://img.yanqic.cn/blog/queue.png?imageslim" alt="队列概览"></h2><h2 id="1-消息队列应用场景"><a href="#1-消息队列应用场景" class="headerlink" title="1. 消息队列应用场景"></a>1. 消息队列应用场景</h2><h3 id="1-1异步处理"><a href="#1-1异步处理" class="headerlink" title="1.1异步处理"></a>1.1异步处理</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/299905/1602562140184-48da3b73-b04f-4a58-81ee-a7cb19573f19.png#align=left&display=inline&height=580&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1160&originWidth=4266&size=526563&status=done&style=none&width=2133" alt="image.png"></p>
-<h3 id="1-2流量削峰"><a href="#1-2流量削峰" class="headerlink" title="1.2流量削峰"></a>1.2流量削峰<img src="https://img.yanqic.cn/blog/async-queue.png?imageslim" alt="流量削峰"></h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/299905/1602568259199-587ebb1f-a369-4b5b-94d4-4b3c90b89eb0.png#align=left&display=inline&height=532&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1063&originWidth=3599&size=407544&status=done&style=none&width=1799.5" alt="image.png"><br>基于令牌桶实现限流</p>
+                <h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p><img src="https://img.yanqic.cn/blog/202203291210225.png?imageslim" alt="image.png"></p>
+<h2 id="1-消息队列应用场景"><a href="#1-消息队列应用场景" class="headerlink" title="1. 消息队列应用场景"></a>1. 消息队列应用场景</h2><h3 id="1-1-异步处理"><a href="#1-1-异步处理" class="headerlink" title="1.1 异步处理"></a>1.1 异步处理</h3><p><img src="https://img.yanqic.cn/blog/202203291207621.png?imageslim" alt="image.png"></p>
+<h3 id="1-2-流量削峰"><a href="#1-2-流量削峰" class="headerlink" title="1.2 流量削峰"></a>1.2 流量削峰</h3><p><img src="https://img.yanqic.cn/blog/202203291208311.png?imageslim" alt="image.png"></p>
+<p><img src="https://img.yanqic.cn/blog/202203291209562.png?imageslim" alt="image.png"><br>基于令牌桶实现限流</p>
 <h3 id="1-3-服务解耦"><a href="#1-3-服务解耦" class="headerlink" title="1.3 服务解耦"></a>1.3 服务解耦</h3><p>我们知道订单是电商系统中比较核心的数据，当一个新订单创建时：<br>支付系统需要发起支付流程；<br>风控系统需要审核订单的合法性；<br>客服系统需要给用户发短信告知用户；<br>经营分析系统需要更新统计数据；<br>……<br>这些订单下游的系统都需要实时获得订单数据。随着业务不断发展，这些订单下游系统不断的增加，不断变化，并且每个系统可能只需要订单数据的一个子集，负责订单服务的开发团队不得不花费很大的精力，应对不断增加变化的下游系统，不停地修改调试订单系统与这些下游系统的接口。任何一个下游系统接口变更，都需要订单模块重新进行一次上线，对于一个电商的核心服务来说，这几乎是不可接受的。<br>所有的电商都选择用消息队列来解决类似的系统耦合过于紧密的问题。引入消息队列后，订单服务在订单变化时发送一条消息到消息队列的一个主题 Order 中，所有下游系统都订阅主题 Order，这样每个下游系统都可以获得一份实时完整的订单数据。</p>
 <h3 id="1-4-其它应用场景"><a href="#1-4-其它应用场景" class="headerlink" title="1.4 其它应用场景"></a>1.4 其它应用场景</h3><ul>
-<li><p>作为发布 &#x2F; 订阅系统实现一个微服务级系统间的观察者模式；</p>
-</li>
-<li><p>连接流计算任务和数据；</p>
-</li>
-<li><p>用于将消息广播给大量接收者。</p>
+<li>作为发布 &#x2F; 订阅系统实现一个微服务级系统间的观察者模式；</li>
+<li>连接流计算任务和数据；</li>
+<li>用于将消息广播给大量接收者。</li>
+</ul>
 <h3 id="1-5-队列功能维度分类"><a href="#1-5-队列功能维度分类" class="headerlink" title="1.5 队列功能维度分类"></a>1.5 队列功能维度分类</h3><p>• 优先级队列：<br>优先级队列不同于先进先出队列，优先级高的消息具备优先被消费的特权，这样可以为下游提供不同消息级别的保证。<br>应用：生产&gt; 消费<br>• 延迟队列</p>
 <ul>
 <li>基于消息型：基于消息的延迟是指为每条消息设置不同的延迟时间，那么每当队列中有新消息进入的时候就会重新根据延迟时间排序(消耗性能)；</li>
-<li>基于列队(通用): 设置不同延迟级别的队列，比如5s、10s、30s、1min、5mins、10mins等，每个队列中消息的延迟时间都是相同的，这样免去了延迟排序所要承受的性能之苦，通过一定的扫描策略（比如定时）即可投递超时的消息。</li>
-</ul>
-</li>
+<li>基于列队(通用): 设置不同延迟级别的队列，比如 5s、10s、30s、1min、5mins、10mins 等，每个队列中消息的延迟时间都是相同的，这样免去了延迟排序所要承受的性能之苦，通过一定的扫描策略（比如定时）即可投递超时的消息。</li>
 </ul>
 <p>• 死信队列<br>可以为每个队列设置一个回退队列，它和死信队列都是为异常的处理提供的一种机制保障。实际情况下，回退队列的角色可以由死信队列和重试队列来扮演。<br>• 重试队列<br>重试越多次重新投递的时间就越久，为此需要设置一个上限，超过投递次数就入死信队列。重试队列与延迟队列有相同的地方，都是需要设置延迟级别，它们彼此的区别是：延迟队列动作由内部触发，重试队列动作由外部消费端触发；延迟队列作用一次，而重试队列的作用范围会向后传递。</p>
-<h3 id="1-6-消费模式分类"><a href="#1-6-消费模式分类" class="headerlink" title="1.6 消费模式分类"></a>1.6 消费模式分类</h3><p>消费模式分为推（push）模式和拉（pull）模式。<br>• 广播消费<br>• 消息一般有两种传递模式：点对点（P2P，Point-to-Point）模式和发布&#x2F;订阅（Pub&#x2F;Sub）模式<br>RabbitMQ是一种典型的点对点模式，而Kafka是一种典型的发布订阅模式。<br>RabbitMQ中可以通过设置交换器类型来实现发布订阅模式而达到广播消费的效果，Kafka中也能以点对点的形式消费，你完全可以把其消费组（consumer group）的概念看成是队列的概念。不过对比来说，Kafka中因为有了消息<strong>回溯功能</strong>的存在(基于offset)，对于广播消费的力度支持比RabbitMQ的要强<br>• 消息回溯<br>• 消息堆积+持久化<br>消息堆积分内存式堆积和磁盘式堆积。RabbitMQ是典型的内存式堆积，但这并非绝对，在某些条件触发后会有换页动作来将内存中的消息换页到磁盘（换页动作会影响吞吐），或者直接使用惰性队列来将消息直接持久化至磁盘中。Kafka是一种典型的磁盘式堆积</p>
-<h2 id="2-主流MQ介绍及对比"><a href="#2-主流MQ介绍及对比" class="headerlink" title="2. 主流MQ介绍及对比"></a>2. 主流MQ介绍及对比</h2><h3 id="2-1-Rabbitmq"><a href="#2-1-Rabbitmq" class="headerlink" title="2.1 Rabbitmq"></a>2.1 Rabbitmq</h3><p>优点：轻量，迅捷，容易部署和使用，拥有灵活的<strong>路由</strong>配置 amqp协议，保证消息<strong>严格顺序性</strong>; 默认<strong>push模式</strong><br>缺点：性能和吞吐量较差，消息堆积的支持不好，不易进行二次开发，消息不可回溯，队列模式，一对多消费支持不好；<br>**</p>
-<h3 id="2-2-Rocketmq"><a href="#2-2-Rocketmq" class="headerlink" title="2.2 Rocketmq"></a>2.2 Rocketmq</h3><p>优点：性能好，稳定可靠，有活跃的中文社区，特点响应快，适合<strong>在线实时业务处理</strong><br>缺点：兼容性较差，但随意影响力的扩大，该问题会有改善，队列有序，topic 无序;<strong>(解决方案</strong>:用一致性哈希算法，计算出队列ID，指定队列ID发送，这样可以保证相同的订单&#x2F;用户的消息总被发送到同一个队列上，就可以确保严格顺序了。)<img src="https://cdn.nlark.com/yuque/0/2020/png/299905/1602569110635-0a97b4b2-a6c0-4af5-b534-dc7134bab44d.png#align=left&display=inline&height=872&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1743&originWidth=4266&size=1179898&status=done&style=none&width=2133" alt="image.png"></p>
-<h3 id="2-3-Kafka"><a href="#2-3-Kafka" class="headerlink" title="2.3 Kafka"></a>2.3 Kafka</h3><p>优点：拥有强大的<strong>性能及吞吐量</strong>，兼容性很好，适合大数据、日志处理；(顺序读写,zero copy实现无内存交换, pagecahce 优化磁盘io);  pull模式(基于长轮询)；<br>缺点：由于“攒一波再处理”导致<strong>延迟比较高，可以通过配置修改批次数量；</strong></p>
+<h3 id="1-6-消费模式分类"><a href="#1-6-消费模式分类" class="headerlink" title="1.6 消费模式分类"></a>1.6 消费模式分类</h3><p>消费模式分为推（push）模式和拉（pull）模式。<br>• 广播消费<br>• 消息一般有两种传递模式：点对点（P2P，Point-to-Point）模式和发布&#x2F;订阅（Pub&#x2F;Sub）模式<br>RabbitMQ 是一种典型的点对点模式，而 Kafka 是一种典型的发布订阅模式。<br>RabbitMQ 中可以通过设置交换器类型来实现发布订阅模式而达到广播消费的效果，Kafka 中也能以点对点的形式消费，你完全可以把其消费组（consumer group）的概念看成是队列的概念。不过对比来说，Kafka 中因为有了消息<strong>回溯功能</strong>的存在(基于 offset)，对于广播消费的力度支持比 RabbitMQ 的要强<br>• 消息回溯<br>• 消息堆积+持久化<br>消息堆积分内存式堆积和磁盘式堆积。RabbitMQ 是典型的内存式堆积，但这并非绝对，在某些条件触发后会有换页动作来将内存中的消息换页到磁盘（换页动作会影响吞吐），或者直接使用惰性队列来将消息直接持久化至磁盘中。Kafka 是一种典型的磁盘式堆积</p>
+<h2 id="2-主流-MQ-介绍及对比"><a href="#2-主流-MQ-介绍及对比" class="headerlink" title="2. 主流 MQ 介绍及对比"></a>2. 主流 MQ 介绍及对比</h2><h3 id="2-1-Rabbitmq"><a href="#2-1-Rabbitmq" class="headerlink" title="2.1 Rabbitmq"></a>2.1 Rabbitmq</h3><p>优点：轻量，迅捷，容易部署和使用，拥有灵活的<strong>路由</strong>配置 amqp 协议，保证消息<strong>严格顺序性</strong>; 默认<strong>push 模式</strong><br>缺点：性能和吞吐量较差，消息堆积的支持不好，不易进行二次开发，消息不可回溯，队列模式，一对多消费支持不好；<br>**</p>
+<h3 id="2-2-Rocketmq"><a href="#2-2-Rocketmq" class="headerlink" title="2.2 Rocketmq"></a>2.2 Rocketmq</h3><p>优点：性能好，稳定可靠，有活跃的中文社区，特点响应快，适合<strong>在线实时业务处理</strong><br>缺点：兼容性较差，但随意影响力的扩大，该问题会有改善，队列有序，topic 无序;<strong>(解决方案</strong>:用一致性哈希算法，计算出队列 ID，指定队列 ID 发送，这样可以保证相同的订单&#x2F;用户的消息总被发送到同一个队列上，就可以确保严格顺序了。)<img src="https://img.yanqic.cn/blog/202203291212813.png?imageslim" alt="image.png"></p>
+<h3 id="2-3-Kafka"><a href="#2-3-Kafka" class="headerlink" title="2.3 Kafka"></a>2.3 Kafka</h3><p>优点：拥有强大的<strong>性能及吞吐量</strong>，兼容性很好，适合大数据、日志处理；(顺序读写,zero copy 实现无内存交换, pagecahce 优化磁盘 io); pull 模式(基于长轮询)；<br>缺点：由于“攒一波再处理”导致<strong>延迟比较高，可以通过配置修改批次数量；</strong></p>
 <h3 id="2-4-Pulsar："><a href="#2-4-Pulsar：" class="headerlink" title="2.4 Pulsar："></a>2.4 Pulsar：</h3><p>采用存储和计算分离的设计，是消息队里产品中黑马，值得持续关注</p>
 <h2 id="3-MQ-常见问题"><a href="#3-MQ-常见问题" class="headerlink" title="3. MQ 常见问题"></a>3. MQ 常见问题</h2><h3 id="3-1-消息队列事务一致性"><a href="#3-1-消息队列事务一致性" class="headerlink" title="3.1 消息队列事务一致性"></a>3.1 消息队列事务一致性</h3><p>RocketMQ 的事务反查机制</p>
 <h3 id="3-2-如何确保消息不会丢失"><a href="#3-2-如何确保消息不会丢失" class="headerlink" title="3.2 如何确保消息不会丢失?"></a>3.2 如何确保消息不会丢失?</h3><p>生产阶段注意错误捕获重试机制<br>存储阶段注意多节点，配置 Broker 参数保证消息存储到磁盘(单节点)<br>消费节点注意业务逻辑处理完成后 ack</p>
@@ -843,12 +844,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%90%8E%E7%AB%AF/">
-                        <span class="chip bg-color">后端</span>
-                    </a>
-                    
                     <a href="/tags/elasticsearch/">
                         <span class="chip bg-color">elasticsearch</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%90%8E%E7%AB%AF/">
+                        <span class="chip bg-color">后端</span>
                     </a>
                     
                 </div>

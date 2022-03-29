@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://yanqic.cn/tags/index.html</loc>
+    <loc>https://yanqic.cn/contact/index.html</loc>
     
     <lastmod>2022-03-18</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://yanqic.cn/contact/index.html</loc>
+    <loc>https://yanqic.cn/tags/index.html</loc>
     
     <lastmod>2022-03-18</lastmod>
     
@@ -155,21 +155,7 @@
 
   
   <url>
-    <loc>https://yanqic.cn/tags/stock/</loc>
-    <lastmod>2022-03-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yanqic.cn/tags/date-structure/</loc>
-    <lastmod>2022-03-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yanqic.cn/tags/mysql/</loc>
+    <loc>https://yanqic.cn/tags/elasticsearch/</loc>
     <lastmod>2022-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -183,6 +169,20 @@
   </url>
   
   <url>
+    <loc>https://yanqic.cn/tags/mysql/</loc>
+    <lastmod>2022-03-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/tags/stock/</loc>
+    <lastmod>2022-03-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/</loc>
     <lastmod>2022-03-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -190,14 +190,14 @@
   </url>
   
   <url>
-    <loc>https://yanqic.cn/tags/elasticsearch/</loc>
+    <loc>https://yanqic.cn/tags/queue/</loc>
     <lastmod>2022-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yanqic.cn/tags/queue/</loc>
+    <loc>https://yanqic.cn/tags/date-structure/</loc>
     <lastmod>2022-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
