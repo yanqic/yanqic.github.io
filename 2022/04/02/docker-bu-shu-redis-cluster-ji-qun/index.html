@@ -4,12 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="消息队列, Coding,technology,Photography">
-    <meta name="description" content="概览
-1. 消息队列应用场景1.1 异步处理
-1.2 流量削峰
-基于令牌桶实现限流
-1.3 服务解耦我们知道订单是电商系统中比较核心的数据，当一个新订单创建时：支付系统需要发起支付流程；风控系统需要审核订单的合法性；客服系统需要给用户发短信">
+    <meta name="keywords" content="docker部署redis-cluster集群, Coding,technology,Photography">
+    <meta name="description" content="
+拉取redis镜像，查看版本
+docker pull redis
+docker inspect redis|grep -i version
+
+创建模版文件
+# redis端口
+port $&amp;#123;PORT&amp;#125;
+# 关闭保护模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +25,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>消息队列 | BLOG</title>
+    <title>docker部署redis-cluster集群 | BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -313,12 +317,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">消息队列</h1>
+                    <h1 class="description center-align post-title">docker部署redis-cluster集群</h1>
                 </div>
             </div>
         </div>
@@ -434,12 +438,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%90%8E%E7%AB%AF/">
-                                <span class="chip bg-color">后端</span>
+                            <a href="/tags/redis/">
+                                <span class="chip bg-color">redis</span>
                             </a>
                         
-                            <a href="/tags/queue/">
-                                <span class="chip bg-color">queue</span>
+                            <a href="/tags/docker/">
+                                <span class="chip bg-color">docker</span>
                             </a>
                         
                     </div>
@@ -450,8 +454,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                技术
+                            <a href="/categories/devops/" class="post-category">
+                                devops
                             </a>
                         
                     </div>
@@ -463,7 +467,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-29
+                    2022-04-02
                 </div>
                 
 
@@ -487,31 +491,151 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p><img src="https://img.yanqic.cn/blog/202203291210225.png?imageslim" alt="image.png"></p>
-<h2 id="1-消息队列应用场景"><a href="#1-消息队列应用场景" class="headerlink" title="1. 消息队列应用场景"></a>1. 消息队列应用场景</h2><h3 id="1-1-异步处理"><a href="#1-1-异步处理" class="headerlink" title="1.1 异步处理"></a>1.1 异步处理</h3><p><img src="https://img.yanqic.cn/blog/202203291207621.png?imageslim" alt="image.png"></p>
-<h3 id="1-2-流量削峰"><a href="#1-2-流量削峰" class="headerlink" title="1.2 流量削峰"></a>1.2 流量削峰</h3><p><img src="https://img.yanqic.cn/blog/202203291208311.png?imageslim" alt="image.png"></p>
-<p><img src="https://img.yanqic.cn/blog/202203291209562.png?imageslim" alt="image.png"><br>基于令牌桶实现限流</p>
-<h3 id="1-3-服务解耦"><a href="#1-3-服务解耦" class="headerlink" title="1.3 服务解耦"></a>1.3 服务解耦</h3><p>我们知道订单是电商系统中比较核心的数据，当一个新订单创建时：<br>支付系统需要发起支付流程；<br>风控系统需要审核订单的合法性；<br>客服系统需要给用户发短信告知用户；<br>经营分析系统需要更新统计数据；<br>……<br>这些订单下游的系统都需要实时获得订单数据。随着业务不断发展，这些订单下游系统不断的增加，不断变化，并且每个系统可能只需要订单数据的一个子集，负责订单服务的开发团队不得不花费很大的精力，应对不断增加变化的下游系统，不停地修改调试订单系统与这些下游系统的接口。任何一个下游系统接口变更，都需要订单模块重新进行一次上线，对于一个电商的核心服务来说，这几乎是不可接受的。<br>所有的电商都选择用消息队列来解决类似的系统耦合过于紧密的问题。引入消息队列后，订单服务在订单变化时发送一条消息到消息队列的一个主题 Order 中，所有下游系统都订阅主题 Order，这样每个下游系统都可以获得一份实时完整的订单数据。</p>
-<h3 id="1-4-其它应用场景"><a href="#1-4-其它应用场景" class="headerlink" title="1.4 其它应用场景"></a>1.4 其它应用场景</h3><ul>
-<li>作为发布 &#x2F; 订阅系统实现一个微服务级系统间的观察者模式；</li>
-<li>连接流计算任务和数据；</li>
-<li>用于将消息广播给大量接收者。</li>
-</ul>
-<h3 id="1-5-队列功能维度分类"><a href="#1-5-队列功能维度分类" class="headerlink" title="1.5 队列功能维度分类"></a>1.5 队列功能维度分类</h3><p>• 优先级队列：<br>优先级队列不同于先进先出队列，优先级高的消息具备优先被消费的特权，这样可以为下游提供不同消息级别的保证。<br>应用：生产&gt; 消费<br>• 延迟队列</p>
-<ul>
-<li>基于消息型：基于消息的延迟是指为每条消息设置不同的延迟时间，那么每当队列中有新消息进入的时候就会重新根据延迟时间排序(消耗性能)；</li>
-<li>基于列队(通用): 设置不同延迟级别的队列，比如 5s、10s、30s、1min、5mins、10mins 等，每个队列中消息的延迟时间都是相同的，这样免去了延迟排序所要承受的性能之苦，通过一定的扫描策略（比如定时）即可投递超时的消息。</li>
-</ul>
-<p>• 死信队列<br>可以为每个队列设置一个回退队列，它和死信队列都是为异常的处理提供的一种机制保障。实际情况下，回退队列的角色可以由死信队列和重试队列来扮演。<br>• 重试队列<br>重试越多次重新投递的时间就越久，为此需要设置一个上限，超过投递次数就入死信队列。重试队列与延迟队列有相同的地方，都是需要设置延迟级别，它们彼此的区别是：延迟队列动作由内部触发，重试队列动作由外部消费端触发；延迟队列作用一次，而重试队列的作用范围会向后传递。</p>
-<h3 id="1-6-消费模式分类"><a href="#1-6-消费模式分类" class="headerlink" title="1.6 消费模式分类"></a>1.6 消费模式分类</h3><p>消费模式分为推（push）模式和拉（pull）模式。<br>• 广播消费<br>• 消息一般有两种传递模式：点对点（P2P，Point-to-Point）模式和发布&#x2F;订阅（Pub&#x2F;Sub）模式<br>RabbitMQ 是一种典型的点对点模式，而 Kafka 是一种典型的发布订阅模式。<br>RabbitMQ 中可以通过设置交换器类型来实现发布订阅模式而达到广播消费的效果，Kafka 中也能以点对点的形式消费，你完全可以把其消费组（consumer group）的概念看成是队列的概念。不过对比来说，Kafka 中因为有了消息<strong>回溯功能</strong>的存在(基于 offset)，对于广播消费的力度支持比 RabbitMQ 的要强<br>• 消息回溯<br>• 消息堆积+持久化<br>消息堆积分内存式堆积和磁盘式堆积。RabbitMQ 是典型的内存式堆积，但这并非绝对，在某些条件触发后会有换页动作来将内存中的消息换页到磁盘（换页动作会影响吞吐），或者直接使用惰性队列来将消息直接持久化至磁盘中。Kafka 是一种典型的磁盘式堆积</p>
-<h2 id="2-主流-MQ-介绍及对比"><a href="#2-主流-MQ-介绍及对比" class="headerlink" title="2. 主流 MQ 介绍及对比"></a>2. 主流 MQ 介绍及对比</h2><h3 id="2-1-Rabbitmq"><a href="#2-1-Rabbitmq" class="headerlink" title="2.1 Rabbitmq"></a>2.1 Rabbitmq</h3><p>优点：轻量，迅捷，容易部署和使用，拥有灵活的<strong>路由</strong>配置 amqp 协议，保证消息<strong>严格顺序性</strong>; 默认<strong>push 模式</strong><br>缺点：性能和吞吐量较差，消息堆积的支持不好，不易进行二次开发，消息不可回溯，队列模式，一对多消费支持不好；<br>**</p>
-<h3 id="2-2-Rocketmq"><a href="#2-2-Rocketmq" class="headerlink" title="2.2 Rocketmq"></a>2.2 Rocketmq</h3><p>优点：性能好，稳定可靠，有活跃的中文社区，特点响应快，适合<strong>在线实时业务处理</strong><br>缺点：兼容性较差，但随意影响力的扩大，该问题会有改善，队列有序，topic 无序;<strong>(解决方案</strong>:用一致性哈希算法，计算出队列 ID，指定队列 ID 发送，这样可以保证相同的订单&#x2F;用户的消息总被发送到同一个队列上，就可以确保严格顺序了。)<img src="https://img.yanqic.cn/blog/202203291212813.png?imageslim" alt="image.png"></p>
-<h3 id="2-3-Kafka"><a href="#2-3-Kafka" class="headerlink" title="2.3 Kafka"></a>2.3 Kafka</h3><p>优点：拥有强大的<strong>性能及吞吐量</strong>，兼容性很好，适合大数据、日志处理；(顺序读写,zero copy 实现无内存交换, pagecahce 优化磁盘 io); pull 模式(基于长轮询)；<br>缺点：由于“攒一波再处理”导致<strong>延迟比较高，可以通过配置修改批次数量；</strong></p>
-<h3 id="2-4-Pulsar："><a href="#2-4-Pulsar：" class="headerlink" title="2.4 Pulsar："></a>2.4 Pulsar：</h3><p>采用存储和计算分离的设计，是消息队里产品中黑马，值得持续关注</p>
-<h2 id="3-MQ-常见问题"><a href="#3-MQ-常见问题" class="headerlink" title="3. MQ 常见问题"></a>3. MQ 常见问题</h2><h3 id="3-1-消息队列事务一致性"><a href="#3-1-消息队列事务一致性" class="headerlink" title="3.1 消息队列事务一致性"></a>3.1 消息队列事务一致性</h3><p>RocketMQ 的事务反查机制</p>
-<h3 id="3-2-如何确保消息不会丢失"><a href="#3-2-如何确保消息不会丢失" class="headerlink" title="3.2 如何确保消息不会丢失?"></a>3.2 如何确保消息不会丢失?</h3><p>生产阶段注意错误捕获重试机制<br>存储阶段注意多节点，配置 Broker 参数保证消息存储到磁盘(单节点)<br>消费节点注意业务逻辑处理完成后 ack</p>
-<h3 id="3-3-如何处理消费过程中的重复消息？"><a href="#3-3-如何处理消费过程中的重复消息？" class="headerlink" title="3.3 如何处理消费过程中的重复消息？"></a>3.3 如何处理消费过程中的重复消息？</h3><p>通过业务实现幂等性；</p>
-<h3 id="3-4-消息积压了该如何处理？"><a href="#3-4-消息积压了该如何处理？" class="headerlink" title="3.4 消息积压了该如何处理？"></a>3.4 消息积压了该如何处理？</h3><p>增加消费能力。在扩容 Consumer 的实例数量的同时，必须同步扩容主题中的分区（也叫队列）数量，确保 Consumer 的实例数和分区数量是相等的</p>
+                <ol>
+<li><p>拉取redis镜像，查看版本</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> pull redis
+<span class="token function">docker</span> inspect redis<span class="token operator">|</span><span class="token function">grep</span> -i version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>创建模版文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># redis端口</span>
+port <span class="token variable">$&#123;PORT&#125;</span>
+<span class="token comment"># 关闭保护模式</span>
+protected-mode no
+<span class="token comment"># 开启集群</span>
+cluster-enabled <span class="token function">yes</span>
+<span class="token comment"># 集群节点配置</span>
+cluster-config-file nodes.conf
+<span class="token comment"># 超时</span>
+cluster-node-timeout <span class="token number">5000</span>
+<span class="token comment"># 集群节点IP host模式为宿主机IP</span>
+cluster-announce-ip <span class="token number">192.168</span>.8.183
+<span class="token comment"># 集群节点端口 7001 - 7006</span>
+cluster-announce-port <span class="token variable">$&#123;PORT&#125;</span>
+cluster-announce-bus-port <span class="token number">1</span><span class="token variable">$&#123;PORT&#125;</span>
+<span class="token comment"># 开启 appendonly 备份模式</span>
+appendonly <span class="token function">yes</span>
+<span class="token comment"># 每秒钟备份</span>
+appendfsync everysec
+<span class="token comment"># 对aof文件进行压缩时，是否执行同步操作</span>
+no-appendfsync-on-rewrite no
+<span class="token comment"># 当目前aof文件大小超过上一次重写时的aof文件大小的100%时会再次进行重写</span>
+auto-aof-rewrite-percentage <span class="token number">100</span>
+<span class="token comment"># 重写前AOF文件的大小最小值 默认 64mb</span>
+auto-aof-rewrite-min-size 64mb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>执行脚本创建配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">cd</span> redis-cluster
+<span class="token keyword">for</span> <span class="token for-or-select variable">port</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span><span class="token function">seq</span> <span class="token number">7001</span> <span class="token number">7006</span><span class="token variable">`</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token punctuation">\</span>
+  <span class="token function">mkdir</span> -p ./<span class="token variable">$&#123;port&#125;</span>/conf <span class="token punctuation">\</span>
+  <span class="token operator">&amp;&amp;</span> <span class="token assign-left variable">PORT</span><span class="token operator">=</span><span class="token variable">$&#123;port&#125;</span> envsubst <span class="token operator">&lt;</span> ./redis-cluster.tmpl <span class="token operator">></span> ./<span class="token variable">$&#123;port&#125;</span>/conf/redis.conf <span class="token punctuation">\</span>
+  <span class="token operator">&amp;&amp;</span> <span class="token function">mkdir</span> -p ./<span class="token variable">$&#123;port&#125;</span>/data<span class="token punctuation">;</span> <span class="token punctuation">\</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>编写docker-compose文件</p>
+<pre class="line-numbers language-none"><code class="language-none"># docker-compose 版本
+version: &#39;3.7&#39;
+
+services:
+  redis7001:
+    image: &#39;redis&#39;
+    container_name: redis7001
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7001&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7001&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7001:7001&quot;
+      - &quot;17001:17001&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+
+
+  redis7002:
+    image: &#39;redis&#39;
+    container_name: redis7002
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7002&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7002&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7002:7002&quot;
+      - &quot;17002:17002&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+
+
+  redis7003:
+    image: &#39;redis&#39;
+    container_name: redis7003
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7003&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7003&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7003:7003&quot;
+      - &quot;17003:17003&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+
+
+  redis7004:
+    image: &#39;redis&#39;
+    container_name: redis7004
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7004&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7004&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7004:7004&quot;
+      - &quot;17004:17004&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+
+
+  redis7005:
+    image: &#39;redis&#39;
+    container_name: redis7005
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7005&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7005&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7005:7005&quot;
+      - &quot;17005:17005&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+
+
+  redis7006:
+    image: &#39;redis&#39;
+    container_name: redis7006
+    command:
+      [&quot;redis-server&quot;, &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf&quot;]
+    volumes:
+      - .&#x2F;7006&#x2F;conf&#x2F;redis.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;redis&#x2F;redis.conf
+      - .&#x2F;7006&#x2F;data:&#x2F;data
+    ports:
+      - &quot;7006:7006&quot;
+      - &quot;17006:17006&quot;
+    environment:
+      # 设置时区为上海，否则时间会有问题
+      - TZ&#x3D;Asia&#x2F;Shanghai
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>集群配置</p>
+<pre class="line-numbers language-none"><code class="language-none">docker exec -it redis7001 redis-cli -p 7001 -a a123456 --cluster create 192.168.8.183:7001 192.168.8.183:7002 192.168.8.183:7003 192.168.8.183:7004 192.168.8.183:7005 192.168.8.183:7006 --cluster-replicas 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>使用测试</p>
+<pre class="line-numbers language-none"><code class="language-none">docker exec -it redis7001 redis-cli -h 192.168.8.183 -p 7003 -a a123456<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
 
                 
             </div>
@@ -538,7 +662,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://yanqic.cn/2022/03/29/xiao-xi-dui-lie/">https://yanqic.cn/2022/03/29/xiao-xi-dui-lie/</a>
+                    <a href="https://yanqic.cn/2022/04/02/docker-bu-shu-redis-cluster-ji-qun/">https://yanqic.cn/2022/04/02/docker-bu-shu-redis-cluster-ji-qun/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -576,12 +700,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%90%8E%E7%AB%AF/">
-                                    <span class="chip bg-color">后端</span>
+                                <a href="/tags/redis/">
+                                    <span class="chip bg-color">redis</span>
                                 </a>
                             
-                                <a href="/tags/queue/">
-                                    <span class="chip bg-color">queue</span>
+                                <a href="/tags/docker/">
+                                    <span class="chip bg-color">docker</span>
                                 </a>
                             
                         </div>
@@ -755,9 +879,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/04/02/docker-bu-shu-redis-cluster-ji-qun/">
                     <div class="card-image">
@@ -775,9 +900,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -790,6 +915,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -812,13 +938,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/28/es-sou-suo-pi-pei-you-hua/">
+                <a href="/2022/03/29/xiao-xi-dui-lie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="ES搜索匹配优化">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="消息队列">
                         
-                        <span class="card-title">ES搜索匹配优化</span>
+                        <span class="card-title">消息队列</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -829,12 +955,16 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-28
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-29
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            yanqic
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -842,12 +972,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/elasticsearch/">
-                        <span class="chip bg-color">elasticsearch</span>
-                    </a>
-                    
                     <a href="/tags/%E5%90%8E%E7%AB%AF/">
                         <span class="chip bg-color">后端</span>
+                    </a>
+                    
+                    <a href="/tags/queue/">
+                        <span class="chip bg-color">queue</span>
                     </a>
                     
                 </div>

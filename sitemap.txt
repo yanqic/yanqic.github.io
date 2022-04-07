@@ -1,3 +1,4 @@
+https://yanqic.cn/2022/04/02/docker-bu-shu-redis-cluster-ji-qun/
 https://yanqic.cn/2022/03/29/xiao-xi-dui-lie/
 https://yanqic.cn/2022/03/28/es-sou-suo-pi-pei-you-hua/
 https://yanqic.cn/2022/03/25/hou-duan-huan-cun-yuan-li-ji-ying-yong/
@@ -22,4 +23,7 @@ https://yanqic.cn/tags/stock/
 https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/
 https://yanqic.cn/tags/date-structure/
 https://yanqic.cn/tags/queue/
+https://yanqic.cn/tags/redis/
+https://yanqic.cn/tags/docker/
 https://yanqic.cn/categories/%E6%8A%80%E6%9C%AF/
+https://yanqic.cn/categories/devops/

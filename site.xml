@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yanqic.cn/2022/04/02/docker-bu-shu-redis-cluster-ji-qun/</loc>
+    
+    <lastmod>2022-04-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yanqic.cn/2022/03/29/xiao-xi-dui-lie/</loc>
     
-    <lastmod>2022-03-29</lastmod>
+    <lastmod>2022-04-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -148,7 +157,7 @@
 
   <url>
     <loc>https://yanqic.cn/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -156,49 +165,63 @@
   
   <url>
     <loc>https://yanqic.cn/tags/elasticsearch/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/%E5%90%8E%E7%AB%AF/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/mysql/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/stock/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/%E5%AD%98%E5%82%A8/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/date-structure/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yanqic.cn/tags/queue/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/tags/redis/</loc>
+    <lastmod>2022-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/tags/docker/</loc>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -207,7 +230,14 @@
   
   <url>
     <loc>https://yanqic.cn/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2022-03-31</lastmod>
+    <lastmod>2022-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yanqic.cn/categories/devops/</loc>
+    <lastmod>2022-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
